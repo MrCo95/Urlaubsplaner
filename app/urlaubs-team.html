@@ -6,8 +6,8 @@
 :root {
   --font: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --bg: #ffffff; --soft: #f7f6f3; --line: #e8e5df; --line-2: #d6d2ca;
-  --ink: #232220; --ink-2: #5d5a55; --ink-3: #77736c;
-  --accent: #d92d4b; --accent-ink: #ffffff; --accent-soft: #fdeaee;
+  --ink: #232220; --ink-2: #5d5a55; --ink-3: #6a665f;
+  --accent: #c4263f; --accent-ink: #ffffff; --accent-soft: #fdeaee;
   --ok: #17794b; --ok-soft: #e1f3e9; --warn: #8f5a07; --warn-soft: #fbefd2; --bad: #b3312b; --bad-soft: #fae2e0; --info: #1d5fa8; --info-soft: #e2edf9; --idle: #5d5a55; --idle-soft: #eeece8;
   --shadow: 0 1px 2px rgba(30,25,20,.06), 0 6px 20px rgba(30,25,20,.07);
   --shadow-hover: 0 2px 4px rgba(30,25,20,.08), 0 14px 34px rgba(30,25,20,.14);
@@ -34,7 +34,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; font: 15px/1.5 var(--font); color: var(--ink); background: var(--bg); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px; min-height: 100vh; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 40; background: var(--bg); }
-h1, h2, h3, p { margin: 0; text-wrap: balance; }
+h1, h2, h3, p { margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
 h1 { font-size: 28px; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
 h2 { font-size: 20px; font-weight: 650; letter-spacing: -.01em; }
 h3 { font-size: 13px; font-weight: 650; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
@@ -177,7 +177,7 @@ label.f { display: flex; flex-direction: column; gap: 5px; font-size: 13.5px; fo
 .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 60; padding: 10px 18px; border-radius: 12px; background: var(--ink); color: var(--bg); box-shadow: var(--shadow-hover); max-width: calc(100vw - 32px); }
 .skel { border-radius: var(--r); background: linear-gradient(90deg, var(--soft), var(--line), var(--soft)); background-size: 200% 100%; animation: sh 1.3s linear infinite; }
 @keyframes sh { to { background-position: -200% 0; } }
-@media (max-width: 560px) { h1 { font-size: 24px; } .hero .img { width: 100%; } .nav button { padding: 10px; } .grid { gap: 24px 16px; } }
+@media (max-width: 560px) { .new-card .img { aspect-ratio: auto; height: 84px; flex-direction: row; gap: 12px; } .new-card .img .plus { width: 36px; height: 36px; } h1 { font-size: 24px; } .hero .img { width: 100%; } .nav button { padding: 10px; } .grid { gap: 24px 16px; } }
 </style>
 
 <div class="bar"><div class="bar-in wrap">
@@ -226,7 +226,7 @@ const AVCOL = ['#d9534f', '#2f8f83', '#6a5acd', '#c27a1b', '#2b7bd0', '#8a5a9e']
 
 /* ---------- Zustand ---------- */
 const S = { rw: false, who: 'Du', view: 'reisen', tripId: null, tab: 'uebersicht', menu: null,
-  trips: [], travelers: [], backlog: [], prices: [], vorschlaege: [], auftraege: [], digests: [], plan: null, versions: [], ready: {},
+  trips: [], travelers: [], backlog: [], prices: [], vorschlaege: [], auftraege: [], digests: [], plan: null, versions: [], planVersions: [], ready: {},
   f: Object.assign({ status: '', person: '', q: '', sort: 'updated', archiv: false }, store.get('filter', {})),
   bf: Object.assign({ status: '', typ: '', q: '' }, store.get('bfilter', {})) };
 let db = null, shellKey = '', raf = 0, dirty = false, subsTrip = [];
@@ -259,8 +259,9 @@ function watch(col, key) {
   return db.collection(col).onSnapshot((s) => { S[key] = s.docs.map((d) => ({ id: d.id, ...d.data() })); S.ready[key] = true; render(); }, () => { S.ready[key] = true; render(); });
 }
 function watchTrip(id) {
-  subsTrip.forEach((u) => u()); subsTrip = []; S.plan = null; S.versions = [];
+  subsTrip.forEach((u) => u()); subsTrip = []; S.plan = null; S.versions = []; S.planVersions = [];
   subsTrip.push(db.doc('plans/' + id).onSnapshot((s) => { S.plan = s.exists ? s.data() : null; S.ready.plan = true; render(); }, () => { S.ready.plan = true; render(); }));
+  subsTrip.push(db.collection('plans/' + id + '/versions').onSnapshot((s) => { S.planVersions = s.docs.map((d) => ({ id: d.id, ...d.data() })); render(); }, () => {}));
   subsTrip.push(db.collection('trips/' + id + '/versions').onSnapshot((s) => { S.versions = s.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.datum || '').localeCompare(a.datum || '')); render(); }, () => {}));
 }
 async function guard(fn, msg) { try { return await fn(); } catch (e) { toast((msg || 'Speichern') + ' hat nicht geklappt: ' + (e && e.message ? e.message : 'unbekannter Fehler')); return null; } }
@@ -281,7 +282,15 @@ async function undo(vid) {
   const next = { ...clone(t), ...clone(v.vorher || {}) };
   await guard(async () => { await writeTrip(t.id, next, 'Rückgängig: ' + v.was); toast('Rückgängig gemacht'); }, 'Rückgängig');
 }
-async function savePlan(p) { await guard(() => db.doc('plans/' + S.tripId).set(p), 'Reiseplan speichern'); }
+async function savePlan(p, was) {
+  const tid = S.tripId, vorher = S.plan ? clone(S.plan) : null;
+  await guard(async () => {
+    await db.doc('plans/' + tid).set(p);
+    await db.collection('plans/' + tid + '/versions').add({ datum: jetzt(), wer: S.who, was: was || 'Reiseplan geändert', vorher });
+    const alt = [...S.planVersions].sort((a, b) => (a.datum || '').localeCompare(b.datum || ''));
+    for (let i = 0; i < alt.length - 19; i++) await db.doc('plans/' + tid + '/versions/' + alt[i].id).delete();
+  }, 'Reiseplan speichern');
+}
 async function auftrag(art, text, tid) {
   await guard(async () => { await db.collection('auftraege').add({ trip: tid || null, art, text: text || '', status: 'offen', datum: jetzt(), wer: S.who }); }, 'Auftrag ablegen');
 }
@@ -336,7 +345,7 @@ function card(t) {
   const emoji = t.emoji || EMOJI[art] || '🌍';
   const ziel = (t.ziel && t.ziel.text) || (t.ziel && t.ziel.modus === 'offen' ? 'Ziel offen' : '');
   const zr = t.zeitraum && t.zeitraum.fruehester_start ? `${dat(t.zeitraum.fruehester_start, true)} – ${dat(t.zeitraum.spaetester_rueckflug, true) || ''}` : 'Zeitraum offen';
-  const preis = p.cur ? `<span class="price">ab ${eur(p.cur.preis_pp)} <small>p. P.${p.cur.preis_gesamt ? ' · ' + eur(p.cur.preis_gesamt) + ' gesamt' : ''}${p.cur.unsicher ? ' · Richtwert' : ''}</small></span>${p.trend ? `<span class="trend ${p.trend}" title="seit letztem Check">${p.trend === 'down' ? '↓ ' + eur(Math.abs(p.diff)) : p.trend === 'up' ? '↑ ' + eur(p.diff) : '→ gleich'}</span>` : ''}${spark(p.series)}` : '<span class="meta">Noch kein Preis</span>';
+  const preis = p.cur ? `<span class="price">ab ${eur(p.cur.preis_pp)} <small>p. P.${p.cur.preis_gesamt ? ' · ' + eur(p.cur.preis_gesamt) + ' gesamt' : ''}${p.cur.unsicher ? ' · Richtwert' : ''}</small></span><span class="row" style="gap:8px;flex-wrap:nowrap">${p.trend ? `<span class="trend ${p.trend}" title="seit letztem Check">${p.trend === 'down' ? '↓ ' + eur(Math.abs(p.diff)) : p.trend === 'up' ? '↑ ' + eur(p.diff) : '→ gleich'}</span>` : ''}${spark(p.series)}</span>` : '<span class="meta">Noch kein Preis</span>';
   const menu = S.menu === t.id ? `<div class="menu" role="menu"><button data-act="open" data-id="${t.id}">Öffnen</button>${S.rw ? `<button data-act="optimieren" data-id="${t.id}">Optimieren</button><button data-act="dup" data-id="${t.id}">Duplizieren</button><button data-act="archiv" data-id="${t.id}">${t.archiviert ? 'Wiederherstellen' : 'Archivieren'}</button>` : ''}</div>` : '';
   return `<div class="card"><div class="img" style="background:${GRADS[idx]}">${t.bild ? `<img src="${esc(t.bild)}" alt="">` : emoji}</div><span class="badge s-${esc(t.status)}">${esc(t.status)}</span><button class="kebab" data-act="menu" data-id="${t.id}" aria-label="Menü für ${esc(t.titel)}" aria-haspopup="true">${ico(I.dots)}</button>${menu}
   <button class="open-card" data-act="open" data-id="${t.id}"><div class="c-title">${esc(t.titel)}</div><div class="c-sub">${esc(ziel)}${ziel ? ' · ' : ''}${esc(zr)}</div>
@@ -444,7 +453,7 @@ TAB.plan = {
     const sum = kosten(p), bud = t.budget && t.budget.gesamt;
     const ratio = bud ? sum / bud : null, amp = ratio == null ? '' : ratio > 1 ? 'bad' : ratio > 0.8 ? 'warn' : 'ok';
     const kopf = `<div class="box"><div class="ampel"><span class="dot ${amp}"></span><b>${eur(sum)}</b><span class="meta">${bud ? 'von ' + eur(bud) + ' Budget · ' + (amp === 'ok' ? 'im Rahmen' : amp === 'warn' ? 'knapp' : 'drüber') : 'Kein festes Budget hinterlegt'}</span><span class="sp"></span>
-      ${S.rw ? `<button class="btn sm" data-act="addtag">${ico(I.plus)}Tag</button><button class="btn sm" data-act="planwunsch">Plan vom Team</button>` : ''}<button class="btn sm" data-act="ics">Kalender (.ics)</button><button class="btn sm" data-act="kurz">Kurzversion (.md)</button></div>
+      ${S.rw ? `<button class="btn sm" data-act="addtag">${ico(I.plus)}Tag</button><button class="btn sm" data-act="planwunsch">Plan vom Team</button>` : ''}<button class="btn sm" data-act="ics">Kalender (.ics)</button><button class="btn sm" data-act="pdf">PDF</button><button class="btn sm" data-act="kurz">Kurzversion (.md)</button></div>
       ${(p.hinweise || []).length ? `<div class="stack" style="margin-top:12px">${p.hinweise.map((h) => `<div class="soft" style="padding:10px 14px;font-size:14px">${esc(h.text)}${h.quelle ? ` <span class="meta">Quelle: ${esc(h.quelle)}</span>` : ''}</div>`).join('')}</div>` : ''}</div>`;
     const tageHtml = tage.length ? tage.map((d, di) => {
       const fest = (d.eintraege || []).filter(FEST).length;
@@ -469,7 +478,8 @@ TAB.backlog = {
 TAB.verlauf = {
   shell() { return '<div class="box" id="v-body"></div>'; },
   fill() {
-    $('#v-body').innerHTML = `<h3>Verlauf</h3>${S.versions.length ? S.versions.map((v, i) => `<div class="prop"><div class="pt"><b>${esc(v.was)}</b><span class="meta">${esc(v.wer)} · ${new Date(v.datum).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}</span></div>${S.rw && i < S.versions.length && v.vorher && Object.keys(v.vorher).length ? `<button class="btn sm" data-act="undo" data-id="${v.id}">Rückgängig</button>` : ''}</div>`).join('') : '<p class="meta" style="margin-top:6px">Noch keine Änderungen.</p>'}<p class="hint" style="margin-top:10px">Jede Änderung speichert eine Version mit Wer, Was und Wann. „Rückgängig“ stellt die Werte vor dieser Änderung wieder her.</p>`;
+    const all = [...S.versions.map((v) => ({ ...v, art: 'reise' })), ...S.planVersions.map((v) => ({ ...v, art: 'plan' }))].sort((a, b) => (b.datum || '').localeCompare(a.datum || ''));
+    $('#v-body').innerHTML = `<h3>Verlauf</h3>${all.length ? all.map((v) => `<div class="prop"><div class="pt"><b>${esc(v.was)}</b><span class="meta">${v.art === 'plan' ? 'Reiseplan' : 'Reise'} · ${esc(v.wer)} · ${new Date(v.datum).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}</span></div>${S.rw && (v.art === 'plan' || (v.vorher && Object.keys(v.vorher).length)) ? `<button class="btn sm" data-act="${v.art === 'plan' ? 'undoplan' : 'undo'}" data-id="${v.id}">Rückgängig</button>` : ''}</div>`).join('') : '<p class="meta" style="margin-top:6px">Noch keine Änderungen.</p>'}<p class="hint" style="margin-top:10px">Jede Änderung an Reise und Reiseplan speichert eine Version mit Wer, Was und Wann. „Rückgängig“ stellt den Stand davor wieder her. Vom Reiseplan bleiben die letzten 20 Versionen.</p>`;
   },
 };
 
@@ -499,6 +509,7 @@ function bitem(b) {
   return `<div class="prop"><div class="pt"><div class="row" style="gap:8px"><span class="tag">${esc(b.typ)}</span><b>${esc(b.titel)}</b></div>
   ${b.zusammenfassung ? `<p style="font-size:14px;margin-top:4px">${esc(b.zusammenfassung)}</p>` : ''}${b.impuls ? `<p style="font-size:14px;margin-top:4px"><b>Warum:</b> ${esc(b.warum || '')} <b>Preisrahmen:</b> ${esc(b.preisrahmen || '')} <b>Zeit:</b> ${esc(b.zeitraum || '')} <b>Nachteil:</b> ${esc(b.risiko || '')}</p>` : ''}
   ${b.notiz ? `<div class="meta">${esc(b.notiz)}</div>` : ''}
+  ${b.link_status === 'tot' || b.link_status === 'veraltet' ? `<div style="margin-top:4px"><span class="status bad">Link ${esc(b.link_status)}</span> <span class="meta">Stand ${dat(b.link_geprueft)}</span></div>` : b.link_status === 'nicht abrufbar' ? `<div style="margin-top:4px"><span class="status warn">Link nicht abrufbar</span> <span class="meta">Stand ${dat(b.link_geprueft)}, bitte von Hand prüfen</span></div>` : b.link_geprueft ? `<div class="meta" style="margin-top:4px">Link geprüft ${dat(b.link_geprueft)}</div>` : ''}
   <div class="row" style="gap:8px;margin-top:6px">${/^https?:\/\//.test(b.url || '') ? `<a class="meta" href="${esc(b.url)}" target="_blank" rel="noopener noreferrer">${esc(b.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 50))}</a>` : ''}${tags(b.tags)}${trips.map((x) => `<span class="tag">${esc(x)}</span>`).join('')}<span class="meta">Priorität ${esc(b.prio || 'mittel')} · ${dat(b.datum)}</span></div></div>
   <div class="stack" style="gap:6px;align-items:flex-end">${S.rw ? `<select class="field-s" data-act="bset" data-id="${b.id}" data-live="1" aria-label="Status">${BL_STATUS.map((s) => `<option ${s === b.status ? 'selected' : ''}>${s}</option>`).join('')}</select>` : `<span class="status">${esc(b.status)}</span>`}
   ${S.rw && b.impuls ? `<div class="row" style="gap:4px"><button class="btn sm ${b.bewertung === 'up' ? 'primary' : ''}" data-act="rate" data-id="${b.id}" data-v="up" aria-label="Daumen hoch">👍</button><button class="btn sm ${b.bewertung === 'down' ? 'primary' : ''}" data-act="rate" data-id="${b.id}" data-v="down" aria-label="Daumen runter">👎</button></div>` : ''}
@@ -549,6 +560,7 @@ function tripForm(t0) {
     const get = (k) => fd.get(k), all = (k) => fd.getAll(k);
     if (num(get('dmin')) > num(get('dmax'))) { toast('Dauer „von“ ist größer als „bis“.'); return false; }
     if (get('start') && get('ende') && get('start') > get('ende')) { toast('Der früheste Start liegt nach dem spätesten Rückflug.'); return false; }
+    if (get('status') !== 'Gebucht' && ((get('start') && get('start') < heute()) || (get('ende') && get('ende') < heute()))) { toast('Das Datum liegt in der Vergangenheit. Bitte einen künftigen Zeitraum wählen.'); return false; }
     const next = { ...t, titel: get('titel').trim(), status: get('status'), reiseart: all('art'), muss: lines(get('muss')), nogos: lines(get('nogos')), mitreisende: all('mit'), notizen: get('notizen'),
       zeitraum: { fruehester_start: get('start') || null, spaetester_rueckflug: get('ende') || null, dauer_min: num(get('dmin')) ?? 7, dauer_max: num(get('dmax')) ?? 14, flex_tage: num(get('flex')) ?? 0 },
       ziel: { modus: get('zmodus'), text: get('ziel').trim() }, budget: { gesamt: num(get('bgesamt')) || null, pro_person_max: num(get('bpp')) || null },
@@ -601,7 +613,7 @@ function entForm(di, ei) {
     if (!p.tage[di]) return false; if (!p.tage[di].eintraege) p.tage[di].eintraege = [];
     if (ei == null) p.tage[di].eintraege.push(n); else p.tage[di].eintraege[ei] = n;
     p.tage[di].eintraege.sort((a, b) => (a.zeit || '99').localeCompare(b.zeit || '99'));
-    await savePlan(p); return true;
+    await savePlan(p, (ei == null ? 'Eintrag hinzugefügt: ' : 'Eintrag geändert: ') + n.titel); return true;
   });
 }
 
@@ -635,22 +647,23 @@ const A = {
     }, 'Vorschlag speichern');
   },
   async undo(el) { await undo(el.dataset.id); },
-  addtag() { const p = clone(planOrEmpty(trip(S.tripId))); p.tage.push({ eintraege: [] }); savePlan(p); },
-  async deltag(el) { const p = clone(planOrEmpty(trip(S.tripId))); const d = +el.dataset.day; if ((p.tage[d].eintraege || []).length && !el.dataset.sure) { el.dataset.sure = 1; el.textContent = 'Wirklich?'; return; } p.tage.splice(d, 1); savePlan(p); },
+  async undoplan(el) { const v = S.planVersions.find((x) => x.id === el.dataset.id); if (!v) return; await savePlan(v.vorher ? clone(v.vorher) : { tage: [], packliste: [], dokumente: [], hinweise: [] }, 'Rückgängig: ' + v.was); toast('Reiseplan zurückgesetzt'); },
+  addtag() { const p = clone(planOrEmpty(trip(S.tripId))); p.tage.push({ eintraege: [] }); savePlan(p, 'Tag ' + p.tage.length + ' hinzugefügt'); },
+  async deltag(el) { const p = clone(planOrEmpty(trip(S.tripId))); const d = +el.dataset.day; if ((p.tage[d].eintraege || []).length && !el.dataset.sure) { el.dataset.sure = 1; el.textContent = 'Wirklich?'; return; } p.tage.splice(d, 1); savePlan(p, 'Tag ' + (d + 1) + ' gelöscht'); },
   addent(el) { entForm(+el.dataset.day, null); },
   edent(el) { entForm(+el.dataset.d, +el.dataset.e); },
-  delent(el) { const p = clone(planOrEmpty(trip(S.tripId))); p.tage[+el.dataset.d].eintraege.splice(+el.dataset.e, 1); savePlan(p); },
+  delent(el) { const p = clone(planOrEmpty(trip(S.tripId))); p.tage[+el.dataset.d].eintraege.splice(+el.dataset.e, 1); savePlan(p, 'Eintrag gelöscht'); },
   async planwunsch() { await auftrag('plan', '', S.tripId); toast('Auftrag liegt bereit. Sag im Chat: „Planer, Entwurf für ' + trip(S.tripId).titel + '“'); },
   async ruhiger(el) { await auftrag('plan-freitext', 'Tag ' + (+el.dataset.day + 1) + ' ruhiger', S.tripId); toast('Wunsch liegt beim Team'); },
-  chk(el) { const p = clone(planOrEmpty(trip(S.tripId))); p[el.dataset.k][+el.dataset.i].done = el.checked; savePlan(p); },
-  chkdel(el) { const p = clone(planOrEmpty(trip(S.tripId))); p[el.dataset.k].splice(+el.dataset.i, 1); savePlan(p); },
+  chk(el) { const p = clone(planOrEmpty(trip(S.tripId))); p[el.dataset.k][+el.dataset.i].done = el.checked; savePlan(p, 'Liste abgehakt'); },
+  chkdel(el) { const p = clone(planOrEmpty(trip(S.tripId))); p[el.dataset.k].splice(+el.dataset.i, 1); savePlan(p, 'Listenpunkt entfernt'); },
   packvor() {
     const t = trip(S.tripId), p = clone(planOrEmpty(t)); const have = new Set((p.packliste || []).map((x) => x.text));
     const kind = (t.mitreisende || []).map(person).some((x) => x && x.beziehung === 'Kind');
     [...PACK.basis, ...(t.reiseart || []).flatMap((a) => PACK[a] || []), ...(kind ? PACK.kind : [])].forEach((x) => { if (!have.has(x)) { have.add(x); (p.packliste = p.packliste || []).push({ text: x, done: false }); } });
-    savePlan(p);
+    savePlan(p, 'Packliste vorgeschlagen');
   },
-  dokvor() { const p = clone(planOrEmpty(trip(S.tripId))); const have = new Set((p.dokumente || []).map((x) => x.text)); DOKS.forEach((x) => { if (!have.has(x)) (p.dokumente = p.dokumente || []).push({ text: x, done: false }); }); savePlan(p); },
+  dokvor() { const p = clone(planOrEmpty(trip(S.tripId))); const have = new Set((p.dokumente || []).map((x) => x.text)); DOKS.forEach((x) => { if (!have.has(x)) (p.dokumente = p.dokumente || []).push({ text: x, done: false }); }); savePlan(p, 'Dokument-Checkliste vorgeschlagen'); },
   async ics() {
     const t = trip(S.tripId), p = planOrEmpty(t); if (!t.zeitraum || !t.zeitraum.fruehester_start) { toast('Für den Kalender braucht die Reise einen frühesten Start.'); return; }
     const E = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
@@ -661,6 +674,12 @@ const A = {
       out.push('SUMMARY:' + E(e.titel)); if (e.ort) out.push('LOCATION:' + E(e.ort)); if (e.notiz) out.push('DESCRIPTION:' + E(e.notiz)); out.push('END:VEVENT');
     }));
     out.push('END:VCALENDAR'); await save(t.titel.replace(/[^\w-]+/g, '-') + '.ics', out.join('\r\n'));
+  },
+  async pdf() {
+    const t = trip(S.tripId), p = planOrEmpty(t); const L = [{ t: t.titel, size: 20, b: true }, { t: `${(t.ziel && t.ziel.text) || 'Ziel offen'} - ${dat(t.zeitraum && t.zeitraum.fruehester_start)} bis ${dat(t.zeitraum && t.zeitraum.spaetester_rueckflug)}` }, { t: 'Mitreisende: ' + (t.mitreisende || []).map(person).filter(Boolean).map((x) => x.name).join(', ') }, { t: '' }];
+    (p.tage || []).forEach((d, i) => { L.push({ t: `Tag ${i + 1}${t.zeitraum && t.zeitraum.fruehester_start ? ' - ' + dat(addDays(t.zeitraum.fruehester_start, i)) : ''}`, size: 14, b: true }); (d.eintraege || []).forEach((e) => L.push({ t: `${e.zeit || '    '}  ${e.titel}${e.ort ? ' (' + e.ort + ')' : ''}${e.kosten ? ', ' + eur(e.kosten) : ''}${e.status && e.status !== 'offen' ? ' [' + e.status + ']' : ''}` })); L.push({ t: '' }); });
+    L.push({ t: 'Kosten laut Plan: ' + eur(kosten(p)), b: true }); if ((p.packliste || []).length) { L.push({ t: '' }, { t: 'Packliste', size: 14, b: true }); p.packliste.forEach((x) => L.push({ t: (x.done ? '[x] ' : '[ ] ') + x.text })); }
+    await save(t.titel.replace(/[^\w-]+/g, '-') + '.pdf', pdfBytes(L));
   },
   async kurz() {
     const t = trip(S.tripId), p = planOrEmpty(t); const L = [`# ${t.titel}`, '', `${(t.ziel && t.ziel.text) || 'Ziel offen'} · ${dat(t.zeitraum && t.zeitraum.fruehester_start)} bis ${dat(t.zeitraum && t.zeitraum.spaetester_rueckflug)}`, `Mitreisende: ${(t.mitreisende || []).map(person).filter(Boolean).map((x) => x.name).join(', ')}`, ''];
@@ -682,6 +701,25 @@ const A = {
     });
   },
 };
+function pdfBytes(zeilen) {
+  const win = (t) => String(t ?? '').replace(/€/g, 'EUR').replace(/[–—]/g, '-').replace(/[„“”]/g, '"').replace(/[’‘]/g, "'").replace(/→/g, '->').replace(/·/g, '-').replace(/[^\x20-\x7e\xa0-\xff]/g, '?');
+  const esc2 = (t) => win(t).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+  const W = 595, H = 842, M = 50, pages = [[]]; let y = H - M;
+  zeilen.forEach((z) => {
+    const sz = z.size || 11, max = Math.floor((W - 2 * M) / (sz * 0.52)), lead = sz * 1.5; const words = win(z.t).split(' '); let cur = '';
+    const push = (txt) => { if (y - lead < M) { pages.push([]); y = H - M; } y -= lead; pages[pages.length - 1].push({ y, t: txt, sz, b: !!z.b }); };
+    if (!words.join('')) { push(''); return; }
+    words.forEach((w) => { if ((cur + ' ' + w).trim().length > max && cur) { push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); }); push(cur);
+  });
+  const objs = []; const add = (o) => { objs.push(o); return objs.length; };
+  add('<< /Type /Catalog /Pages 2 0 R >>'); add(''); add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'); add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
+  const kids = pages.map((pg) => { const c = pg.map((l) => `BT /${l.b ? 'F2' : 'F1'} ${l.sz} Tf ${M} ${l.y.toFixed(1)} Td (${esc2(l.t)}) Tj ET`).join('\n'); const ci = add(`<< /Length ${c.length} >>\nstream\n${c}\nendstream`); return add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${ci} 0 R >>`); });
+  objs[1] = `<< /Type /Pages /Count ${kids.length} /Kids [${kids.map((k) => k + ' 0 R').join(' ')}] >>`;
+  let out = '%PDF-1.4\n'; const off = [];
+  objs.forEach((o, i) => { off.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const x = out.length; out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n` + off.map((o) => String(o).padStart(10, '0') + ' 00000 n \n').join('') + `trailer\n<< /Size ${objs.length + 1} /Root 1 0 R >>\nstartxref\n${x}\n%%EOF`;
+  return Uint8Array.from(out, (c) => c.charCodeAt(0) & 255);
+}
 async function save(filename, data) {
   const d = await claude.use('downloads').catch(() => null); if (!d) { toast('Download ist in dieser Ansicht nicht verfügbar.'); return; }
   try { await d.save({ filename, data }); toast('Gespeichert'); } catch (e) { if (!e || e.code !== 'declined') toast('Speichern nicht möglich: ' + ((e && e.message) || 'unbekannter Fehler')); }
@@ -711,12 +749,15 @@ document.addEventListener('submit', async (e) => {
     e.preventDefault(); const inp = $('#qa-t'), v = inp.value.trim(); if (!v) return;
     const isUrl = /^https?:\/\//i.test(v); let titel = v, url = '';
     if (isUrl) { url = v.split(/\s+/)[0]; try { const u = new URL(url); titel = u.hostname.replace(/^www\./, '') + (u.pathname.length > 1 ? u.pathname.slice(0, 40) : ''); } catch { /* Titel bleibt */ } }
+    const nu = (x) => { try { const u = new URL(x); u.hash = ''; ['utm_source', 'utm_medium', 'utm_campaign', 'fbclid', 'gclid'].forEach((k) => u.searchParams.delete(k)); return (u.hostname.replace(/^www\./, '') + u.pathname.replace(/\/$/, '') + u.search).toLowerCase(); } catch { return String(x).toLowerCase(); } };
+    const dup = S.backlog.find((b) => (isUrl && b.url && nu(b.url) === nu(url)) || (!isUrl && !b.url && b.titel.trim().toLowerCase() === v.slice(0, 120).trim().toLowerCase()));
+    if (dup) { if (S.view === 'reise' && !(dup.trips || []).includes(S.tripId)) { await guard(() => db.doc('backlog/' + dup.id).update({ trips: [...(dup.trips || []), S.tripId] }), 'Zuordnen'); toast('Schon im Backlog, jetzt auch dieser Reise zugeordnet.'); } else toast('Das ist schon im Backlog.'); inp.value = ''; return; }
     const ok = await guard(() => db.collection('backlog').add({ typ: isUrl ? 'Link' : 'Idee', titel: titel.slice(0, 120), url, notiz: isUrl ? v.slice(url.length).trim() : '', tags: [], trips: S.view === 'reise' ? [S.tripId] : [], prio: 'mittel', status: 'neu', datum: heute() }), 'Eintrag speichern');
     if (ok) { inp.value = ''; toast('Im Backlog. Titel und Kurzfassung holt das Team auf Zuruf.'); }
   } else if (f.id === 'frei') {
     e.preventDefault(); const v = $('#frei-t').value.trim(); if (!v) return; await auftrag('freitext', v, S.tripId); $('#frei-t').value = ''; toast('Wunsch liegt beim Team. Sag im Chat: „Optimiere ' + trip(S.tripId).titel + '“');
   } else if (f.dataset.form === 'chkadd') {
-    e.preventDefault(); const inp = f.querySelector('input'), v = inp.value.trim(); if (!v) return; const p = clone(planOrEmpty(trip(S.tripId))); (p[f.dataset.k] = p[f.dataset.k] || []).push({ text: v, done: false }); inp.value = ''; savePlan(p);
+    e.preventDefault(); const inp = f.querySelector('input'), v = inp.value.trim(); if (!v) return; const p = clone(planOrEmpty(trip(S.tripId))); (p[f.dataset.k] = p[f.dataset.k] || []).push({ text: v, done: false }); inp.value = ''; savePlan(p, 'Listenpunkt hinzugefügt');
   }
 });
 /* Drag & Drop im Reiseplan */
@@ -727,7 +768,7 @@ document.addEventListener('dragover', (e) => { const d = e.target.closest && e.t
 document.addEventListener('drop', (e) => {
   const d = e.target.closest && e.target.closest('.day'); if (!d || !drag) return; e.preventDefault();
   const to = +d.dataset.day, p = clone(planOrEmpty(trip(S.tripId))); const [it] = p.tage[drag.d].eintraege.splice(drag.e, 1); p.tage[to].eintraege.push(it);
-  p.tage[to].eintraege.sort((a, b) => (a.zeit || '99').localeCompare(b.zeit || '99')); drag = null; savePlan(p);
+  p.tage[to].eintraege.sort((a, b) => (a.zeit || '99').localeCompare(b.zeit || '99')); drag = null; savePlan(p, 'Eintrag „' + it.titel + '“ nach Tag ' + (to + 1) + ' verschoben');
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && S.menu) { S.menu = null; render(); } });
 

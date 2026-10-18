@@ -20,6 +20,66 @@
       "gesamt": null,
       "pro_person_max": null
     },
+    "erstellt": "2026-10-18T14:40:05.201Z",
+    "geaendert": "2026-10-18T14:40:05.201Z",
+    "gruppe": {
+      "aktiv": true,
+      "haushalte": [],
+      "wuensche": ""
+    },
+    "mitreisende": [
+      "p_kristina",
+      "p_martin",
+      "p_matteo"
+    ],
+    "muss": [],
+    "nogos": [],
+    "notizen": "",
+    "reiseart": [
+      "Strand"
+    ],
+    "status": "Idee",
+    "titel": "Sommer",
+    "unterkunft": {
+      "min_bewertung": 0,
+      "min_sterne": 0,
+      "typ": [],
+      "verpflegung": "egal"
+    },
+    "zeitraum": {
+      "dauer_max": 14,
+      "dauer_min": 7,
+      "flex_tage": 0,
+      "fruehester_start": "2027-02-08",
+      "spaetester_rueckflug": "2027-02-28"
+    },
+    "ziel": {
+      "modus": "offen",
+      "text": ""
+    },
+    "id": "pld312yzf18hv3085j1k"
+  },
+  {
+    "anreise": {
+      "abflughaefen": [
+        "Köln/Bonn (CGN)",
+        "Düsseldorf (DUS)"
+      ],
+      "direktflug": false,
+      "max_reisezeit_h": null,
+      "modi": [
+        "Flug"
+      ]
+    },
+    "archiviert": false,
+    "beobachten": {
+      "checks_pro_woche": 2,
+      "schwelle_prozent": 10
+    },
+    "budget": {
+      "gesamt": null,
+      "pro_person_max": null
+    },
     "emoji": "🏖️",
     "erstellt": "2026-10-18T10:00:00.000Z",
     "geaendert": "2026-10-18T10:00:00.000Z",

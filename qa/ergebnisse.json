@@ -1,0 +1,994 @@
+[
+ {
+  "ids": [
+   "A-016",
+   "A-130"
+  ],
+  "ok": true,
+  "msg": "Leere Startseite zeigt verständlichen Leerzustand"
+ },
+ {
+  "ids": [
+   "A-031"
+  ],
+  "ok": true,
+  "msg": "Kachel „+ Neue Reise“ ist die erste Kachel"
+ },
+ {
+  "ids": [
+   "A-031"
+  ],
+  "ok": true,
+  "msg": "Erste Kachel im Raster ist „Neue Reise“ (Klasse card new-card)"
+ },
+ {
+  "ids": [
+   "A-130"
+  ],
+  "ok": true,
+  "msg": "Fehlerzustand ohne Datenbank: „Anmeldung nötig“ auf Deutsch"
+ },
+ {
+  "ids": [
+   "A-134"
+  ],
+  "ok": true,
+  "msg": "Nur-Lesen: keine Schreib-Bedienelemente"
+ },
+ {
+  "ids": [
+   "A-039"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Titel der Reise“"
+ },
+ {
+  "ids": [
+   "A-040"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Frühester Start“"
+ },
+ {
+  "ids": [
+   "A-040"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Spätester Rückflug“"
+ },
+ {
+  "ids": [
+   "A-040"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Dauer von“"
+ },
+ {
+  "ids": [
+   "A-040"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Flexibilität“"
+ },
+ {
+  "ids": [
+   "A-043"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Budget gesamt“"
+ },
+ {
+  "ids": [
+   "A-043"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Maximal pro Person“"
+ },
+ {
+  "ids": [
+   "A-044"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Mindest-Sterne“"
+ },
+ {
+  "ids": [
+   "A-044"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Verpflegung“"
+ },
+ {
+  "ids": [
+   "A-045"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Direktflug“"
+ },
+ {
+  "ids": [
+   "A-045"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Max. Reisezeit“"
+ },
+ {
+  "ids": [
+   "A-046"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Muss-Kriterien“"
+ },
+ {
+  "ids": [
+   "A-046"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „No-Gos“"
+ },
+ {
+  "ids": [
+   "A-047"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Alarm ab Preisfall“"
+ },
+ {
+  "ids": [
+   "A-048"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Checks pro Woche“"
+ },
+ {
+  "ids": [
+   "A-049"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Notizen“"
+ },
+ {
+  "ids": [
+   "A-049"
+  ],
+  "ok": true,
+  "msg": "Eingabemaske hat Feld „Status“"
+ },
+ {
+  "ids": [
+   "A-042"
+  ],
+  "ok": true,
+  "msg": "Alle 7 Reisearten: ['Strand', 'Städtetrip', 'Natur/Aktiv', 'Rundreise', 'Skifahren', 'Wellness', 'Sonstiges']"
+ },
+ {
+  "ids": [
+   "A-041"
+  ],
+  "ok": true,
+  "msg": "Ziele konkret/Region/offen"
+ },
+ {
+  "ids": [
+   "A-044"
+  ],
+  "ok": true,
+  "msg": "Unterkunftstypen"
+ },
+ {
+  "ids": [
+   "A-045"
+  ],
+  "ok": true,
+  "msg": "Verkehrsmittel Flug/Bahn/Auto"
+ },
+ {
+  "ids": [
+   "A-015"
+  ],
+  "ok": true,
+  "msg": "Standard-Abflughäfen CGN und DUS"
+ },
+ {
+  "ids": [
+   "A-047",
+   "A-048"
+  ],
+  "ok": true,
+  "msg": "Standard Schwelle 10 %, 2 Checks pro Woche"
+ },
+ {
+  "ids": [
+   "A-058"
+  ],
+  "ok": true,
+  "msg": "Maske fragt keine Dokumentnummern ab"
+ },
+ {
+  "ids": [
+   "A-039",
+   "A-134"
+  ],
+  "ok": true,
+  "msg": "Leerer Titel wird nicht gespeichert"
+ },
+ {
+  "ids": [
+   "A-050"
+  ],
+  "ok": true,
+  "msg": "Rückreise vor Hinreise abgelehnt: „Der früheste Start liegt nach dem spätesten Rückflug.“"
+ },
+ {
+  "ids": [
+   "A-051"
+  ],
+  "ok": true,
+  "msg": "Dauer von > bis abgelehnt: „Dauer „von“ ist größer als „bis“.“"
+ },
+ {
+  "ids": [
+   "A-052"
+  ],
+  "ok": true,
+  "msg": "Kind ohne Alter abgelehnt: „Bei Kindern ist das Alter Pflicht: Kind ohne Alter“"
+ },
+ {
+  "ids": [
+   "A-054"
+  ],
+  "ok": true,
+  "msg": "Datum in der Vergangenheit gemeldet oder abgelehnt (Toast: „Das Datum liegt in der Vergangenheit. Bitte einen künftigen Zeitraum wählen.“, gespeichert: 0)"
+ },
+ {
+  "ids": [
+   "A-055"
+  ],
+  "ok": true,
+  "msg": "Gültige Reise wird gespeichert"
+ },
+ {
+  "ids": [
+   "A-056"
+  ],
+  "ok": true,
+  "msg": "Sonderzeichen werden nicht als HTML ausgeführt"
+ },
+ {
+  "ids": [
+   "A-053"
+  ],
+  "ok": true,
+  "msg": "Reise ohne Budget zeigt „Offen: Budget richtet sich nach dem Angebot“"
+ },
+ {
+  "ids": [
+   "A-064",
+   "A-065",
+   "A-066",
+   "A-067"
+  ],
+  "ok": true,
+  "msg": "Gruppenreise: Haushalte, Budgets, Wünsche, Kostenaufteilung sichtbar"
+ },
+ {
+  "ids": [
+   "A-036"
+  ],
+  "ok": true,
+  "msg": "Detail-Tabs: ['Übersicht', 'Angebote', 'Reiseplan', 'Backlog', 'Verlauf']"
+ },
+ {
+  "ids": [
+   "A-056"
+  ],
+  "ok": true,
+  "msg": "Langer Titel erzeugt kein horizontales Scrollen (Detail)"
+ },
+ {
+  "ids": [
+   "A-055"
+  ],
+  "ok": true,
+  "msg": "Bearbeiten speichert Budget"
+ },
+ {
+  "ids": [
+   "A-074",
+   "A-125"
+  ],
+  "ok": true,
+  "msg": "Versionen mit Wer/Was/Wann: 2"
+ },
+ {
+  "ids": [
+   "A-075",
+   "A-125"
+  ],
+  "ok": true,
+  "msg": "Rückgängig stellt Budget „offen“ wieder her"
+ },
+ {
+  "ids": [
+   "A-068",
+   "A-069"
+  ],
+  "ok": true,
+  "msg": "Optimieren legt Auftrag für genau diese Reise ab"
+ },
+ {
+  "ids": [
+   "A-073"
+  ],
+  "ok": true,
+  "msg": "Optimieren ändert die Reise nicht ohne Okay"
+ },
+ {
+  "ids": [
+   "A-076"
+  ],
+  "ok": true,
+  "msg": "Freitext-Wunsch wird als Auftrag abgelegt"
+ },
+ {
+  "ids": [
+   "A-071",
+   "A-072"
+  ],
+  "ok": true,
+  "msg": "3 Vorschläge mit Effekt und Annehmen/Ablehnen/Später"
+ },
+ {
+  "ids": [
+   "A-072",
+   "A-073",
+   "A-074"
+  ],
+  "ok": true,
+  "msg": "Annehmen setzt Änderung um (Budget 3800) und merkt Status"
+ },
+ {
+  "ids": [
+   "A-072"
+  ],
+  "ok": true,
+  "msg": "Ablehnen und Später speichern Status"
+ },
+ {
+  "ids": [
+   "A-075"
+  ],
+  "ok": true,
+  "msg": "Angenommenen Vorschlag per Rückgängig zurücknehmen"
+ },
+ {
+  "ids": [
+   "A-077"
+  ],
+  "ok": true,
+  "msg": "Plan: Leerzustand mit nächster Aktion"
+ },
+ {
+  "ids": [
+   "A-083"
+  ],
+  "ok": true,
+  "msg": "Plan: „Entwurf vom Team“ legt Auftrag an"
+ },
+ {
+  "ids": [
+   "A-083"
+  ],
+  "ok": true,
+  "msg": "Plan-Entwurf-Auftrag abgelegt"
+ },
+ {
+  "ids": [
+   "A-077"
+  ],
+  "ok": true,
+  "msg": "Drei Tage angelegt"
+ },
+ {
+  "ids": [
+   "A-078",
+   "A-079",
+   "A-080",
+   "A-081"
+  ],
+  "ok": true,
+  "msg": "Einträge mit Typ, Status, Teilnehmer gespeichert"
+ },
+ {
+  "ids": [
+   "A-079"
+  ],
+  "ok": true,
+  "msg": "Ort wird zum Kartenlink, Link vorhanden"
+ },
+ {
+  "ids": [
+   "A-082"
+  ],
+  "ok": true,
+  "msg": "Hinweis bei mehr als 2 festen Programmpunkten (Tag 2 hat 3)"
+ },
+ {
+  "ids": [
+   "A-090",
+   "A-091"
+  ],
+  "ok": true,
+  "msg": "Kostensumme 810 € sichtbar: „810 € Kein festes Budget hinterlegt Tag Plan vom Team Kalender (.ics) PDF Kurzve“"
+ },
+ {
+  "ids": [
+   "A-091"
+  ],
+  "ok": true,
+  "msg": "Ampel: knapp=dot warn, drüber=dot bad, im Rahmen=dot ok"
+ },
+ {
+  "ids": [
+   "A-084"
+  ],
+  "ok": true,
+  "msg": "Drag & Drop verschiebt Eintrag in anderen Tag"
+ },
+ {
+  "ids": [
+   "A-082"
+  ],
+  "ok": true,
+  "msg": "Hinweis verschwindet nach dem Verschieben"
+ },
+ {
+  "ids": [
+   "A-085"
+  ],
+  "ok": true,
+  "msg": "„Tag 3 ruhiger“ als Auftrag abgelegt"
+ },
+ {
+  "ids": [
+   "A-088"
+  ],
+  "ok": true,
+  "msg": "Packliste nach Reiseart (Strand) und Kind: 12 Einträge"
+ },
+ {
+  "ids": [
+   "A-089"
+  ],
+  "ok": true,
+  "msg": "Dokument-Checkliste nennt Quelle Auswärtiges Amt"
+ },
+ {
+  "ids": [
+   "A-088"
+  ],
+  "ok": true,
+  "msg": "Packlisten-Punkt hinzufügen"
+ },
+ {
+  "ids": [
+   "A-093"
+  ],
+  "ok": true,
+  "msg": ".ics: 6 Termine, gültiger Aufbau"
+ },
+ {
+  "ids": [
+   "A-094"
+  ],
+  "ok": true,
+  "msg": "Kurzversion enthält Tage und Einträge"
+ },
+ {
+  "ids": [
+   "A-092"
+  ],
+  "ok": true,
+  "msg": "PDF-Export-Schaltfläche vorhanden"
+ },
+ {
+  "ids": [
+   "A-092"
+  ],
+  "ok": true,
+  "msg": "PDF wird erzeugt und mit pypdf gelesen: 1 Seite(n), 987 Zeichen"
+ },
+ {
+  "ids": [
+   "A-125"
+  ],
+  "ok": true,
+  "msg": "Reiseplan-Änderungen werden versioniert (13 Versionen) und im Verlauf angezeigt"
+ },
+ {
+  "ids": [
+   "A-125"
+  ],
+  "ok": true,
+  "msg": "Rückgängig für Reiseplan entfernt den letzten Listenpunkt (Packliste 12, vorher 13)"
+ },
+ {
+  "ids": [
+   "A-086",
+   "A-087"
+  ],
+  "ok": true,
+  "msg": "Wetter- und Öffnungszeiten-Hinweise werden mit Quelle im Plan angezeigt"
+ },
+ {
+  "ids": [
+   "A-103"
+  ],
+  "ok": true,
+  "msg": "Backlog-Eintrag wird in Tag 2 des Plans übernommen, Status „übernommen“"
+ },
+ {
+  "ids": [
+   "A-099"
+  ],
+  "ok": true,
+  "msg": "Backlog-Tab mit Quick-Add"
+ },
+ {
+  "ids": [
+   "A-130"
+  ],
+  "ok": true,
+  "msg": "Leerer Backlog zeigt Leerzustand"
+ },
+ {
+  "ids": [
+   "A-097"
+  ],
+  "ok": true,
+  "msg": "5 Links und 1 Text per Quick-Add: 6 Einträge"
+ },
+ {
+  "ids": [
+   "A-099"
+  ],
+  "ok": true,
+  "msg": "Quick-Add im Reise-Tab ordnet der Reise zu"
+ },
+ {
+  "ids": [
+   "A-108"
+  ],
+  "ok": true,
+  "msg": "Duplikat-Link wird nicht doppelt angelegt (Toast: „Das ist schon im Backlog.“)"
+ },
+ {
+  "ids": [
+   "A-098"
+  ],
+  "ok": false,
+  "msg": "Titel und Kurzbeschreibung automatisch gefüllt"
+ },
+ {
+  "ids": [
+   "A-126",
+   "A-134"
+  ],
+  "ok": true,
+  "msg": "Backlog: Skript, HTML und javascript:-Link in Einträgen bleiben wirkungslos"
+ },
+ {
+  "ids": [
+   "A-104"
+  ],
+  "ok": true,
+  "msg": "Tote und nicht abrufbare Links werden unterschiedlich markiert"
+ },
+ {
+  "ids": [
+   "A-099"
+  ],
+  "ok": true,
+  "msg": "Globale Ansicht zeigt alle Einträge (7)"
+ },
+ {
+  "ids": [
+   "A-095"
+  ],
+  "ok": true,
+  "msg": "Backlog-Typen vollständig"
+ },
+ {
+  "ids": [
+   "A-096"
+  ],
+  "ok": true,
+  "msg": "Backlog-Felder: Titel, URL, Notiz, Tags, Reisen, Priorität, Status"
+ },
+ {
+  "ids": [
+   "A-134"
+  ],
+  "ok": true,
+  "msg": "Ungültige URL wird mit Meldung abgelehnt: „Die URL muss mit http:// oder https:// beginnen.“"
+ },
+ {
+  "ids": [
+   "A-096"
+  ],
+  "ok": true,
+  "msg": "Status ändern im Backlog"
+ },
+ {
+  "ids": [
+   "A-106"
+  ],
+  "ok": true,
+  "msg": "Daumen hoch speichert Bewertung und zeigt gelernte Vorlieben"
+ },
+ {
+  "ids": [
+   "A-105"
+  ],
+  "ok": true,
+  "msg": "Impuls zeigt Ziel, Grund, Preisrahmen, Zeitraum, Nachteil"
+ },
+ {
+  "ids": [
+   "A-099"
+  ],
+  "ok": true,
+  "msg": "Backlog-Suche filtert"
+ },
+ {
+  "ids": [
+   "A-057",
+   "A-062"
+  ],
+  "ok": true,
+  "msg": "Personenliste mit Martin, Kristina, Matteo"
+ },
+ {
+  "ids": [
+   "A-058"
+  ],
+  "ok": true,
+  "msg": "Kind ohne Alter wird abgelehnt: „Bei Kindern ist das Alter Pflicht.“"
+ },
+ {
+  "ids": [
+   "A-058",
+   "A-059",
+   "A-060",
+   "A-061"
+  ],
+  "ok": true,
+  "msg": "Person mit Besonderheiten, Veto und Ablaufdatum gespeichert, keine Nummernfelder"
+ },
+ {
+  "ids": [
+   "A-016",
+   "A-018",
+   "A-019",
+   "A-020"
+  ],
+  "ok": true,
+  "msg": "Raster mit 4 Karten; Titel, Ziel, Zeitraum auf Kachel"
+ },
+ {
+  "ids": [
+   "A-021"
+  ],
+  "ok": true,
+  "msg": "Avatare der Mitreisenden (3)"
+ },
+ {
+  "ids": [
+   "A-022"
+  ],
+  "ok": true,
+  "msg": "Status-Badge"
+ },
+ {
+  "ids": [
+   "A-023"
+  ],
+  "ok": true,
+  "msg": "Bestpreis „ab 700 € p. P. · 2.100 € gesamt“: 🏖️ Beobachten [TEST] Sommer 2027 Mallorca · 19.7. – 31.8. M K M ab 700 € p. P. · 2.100 € gesamt · Richtwert ↓ 100 € Letzter Check 18. Okt. 2"
+ },
+ {
+  "ids": [
+   "A-024"
+  ],
+  "ok": true,
+  "msg": "Trend: Tal ↓ (800→700), Rom ↑ (300→350)"
+ },
+ {
+  "ids": [
+   "A-025"
+  ],
+  "ok": true,
+  "msg": "Datum des letzten Checks"
+ },
+ {
+  "ids": [
+   "A-037"
+  ],
+  "ok": true,
+  "msg": "Preisverlauf-Kurve in der Kachel"
+ },
+ {
+  "ids": [
+   "A-017",
+   "A-135"
+  ],
+  "ok": true,
+  "msg": "Abgerundete Bildfläche 4:3 mit 16px Radius"
+ },
+ {
+  "ids": [
+   "A-017"
+  ],
+  "ok": true,
+  "msg": "Hover-Effekt hebt Kachel an (none → matrix(1, 0, 0, 1, 0, -3))"
+ },
+ {
+  "ids": [
+   "A-026"
+  ],
+  "ok": true,
+  "msg": "Ohne Bild: Farbverlauf mit Emoji, keine Portalbilder"
+ },
+ {
+  "ids": [
+   "A-027"
+  ],
+  "ok": true,
+  "msg": "Filter Status „Gebucht“ → 1 Kachel"
+ },
+ {
+  "ids": [
+   "A-028"
+  ],
+  "ok": true,
+  "msg": "Filter Mitreisende „Matteo“ → 1 Kachel"
+ },
+ {
+  "ids": [
+   "A-029"
+  ],
+  "ok": true,
+  "msg": "Suche „rom“ → 1 Kachel"
+ },
+ {
+  "ids": [
+   "A-030"
+  ],
+  "ok": true,
+  "msg": "Sortierung nach Preis: ['[TEST] Städtetrip Rom', '[TEST] Sommer 2027', '[TEST] Skiurlaub']"
+ },
+ {
+  "ids": [
+   "A-030"
+  ],
+  "ok": true,
+  "msg": "Sortierung nach Reisedatum: ['[TEST] Skiurlaub', '[TEST] Städtetrip Rom', '[TEST] Sommer 2027']"
+ },
+ {
+  "ids": [
+   "A-030"
+  ],
+  "ok": true,
+  "msg": "Sortierung nach zuletzt aktualisiert"
+ },
+ {
+  "ids": [
+   "A-130"
+  ],
+  "ok": true,
+  "msg": "Filter und Sortierung werden nach dem Neuladen gemerkt"
+ },
+ {
+  "ids": [
+   "A-032",
+   "A-033",
+   "A-034",
+   "A-035"
+  ],
+  "ok": true,
+  "msg": "Kachelmenü: ['Öffnen', 'Optimieren', 'Duplizieren', 'Archivieren']"
+ },
+ {
+  "ids": [
+   "A-033"
+  ],
+  "ok": true,
+  "msg": "Optimieren aus dem Kachelmenü legt Auftrag an"
+ },
+ {
+  "ids": [
+   "A-034"
+  ],
+  "ok": true,
+  "msg": "Duplizieren erzeugt „(Kopie)“ mit Status Idee"
+ },
+ {
+  "ids": [
+   "A-035"
+  ],
+  "ok": true,
+  "msg": "Archivieren blendet Kachel aus"
+ },
+ {
+  "ids": [
+   "A-035"
+  ],
+  "ok": true,
+  "msg": "Archiv-Ansicht zeigt die Kachel"
+ },
+ {
+  "ids": [
+   "A-035"
+  ],
+  "ok": true,
+  "msg": "Wiederherstellen"
+ },
+ {
+  "ids": [
+   "A-118",
+   "A-130"
+  ],
+  "ok": true,
+  "msg": "Reise ohne Angebote: verständlicher Leerzustand mit nächstem Schritt"
+ },
+ {
+  "ids": [
+   "A-109",
+   "A-122"
+  ],
+  "ok": true,
+  "msg": "Angebote zeigen Stand-Datum, Quelle und „unsicher“"
+ },
+ {
+  "ids": [
+   "A-112",
+   "A-038"
+  ],
+  "ok": true,
+  "msg": "Preisverlauf-Kurve im Tab Angebote"
+ },
+ {
+  "ids": [
+   "A-115",
+   "A-116"
+  ],
+  "ok": true,
+  "msg": "Digest in der App (Empfehlung, Top 3), Skript im Digest wirkungslos"
+ },
+ {
+  "ids": [
+   "A-123"
+  ],
+  "ok": true,
+  "msg": "Gesamtpreis-Spalte vorhanden"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "desktop (1440 px): horizontales Überlaufen 0 px"
+ },
+ {
+  "ids": [
+   "A-016"
+  ],
+  "ok": true,
+  "msg": "Desktop: 4 Spalten"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "tablet (820 px): horizontales Überlaufen 0 px"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "handy (390 px): horizontales Überlaufen 0 px"
+ },
+ {
+  "ids": [
+   "A-004"
+  ],
+  "ok": true,
+  "msg": "Handy: Kacheln einspaltig (1 Spalte)"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "Handy: Detailansicht ohne horizontales Scrollen"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "Handy: Reiseplan ohne horizontales Scrollen"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "Handy: Eingabemaske ohne horizontales Scrollen"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "handy-dunkel (390 px): horizontales Überlaufen 0 px"
+ },
+ {
+  "ids": [
+   "A-005"
+  ],
+  "ok": true,
+  "msg": "Dunkelmodus folgt System (rgb(22, 21, 20))"
+ },
+ {
+  "ids": [
+   "A-129"
+  ],
+  "ok": true,
+  "msg": "desktop-dunkel (1440 px): horizontales Überlaufen 0 px"
+ },
+ {
+  "ids": [
+   "A-005"
+  ],
+  "ok": true,
+  "msg": "Dunkelmodus folgt System (rgb(22, 21, 20))"
+ },
+ {
+  "ids": [
+   "A-131"
+  ],
+  "ok": true,
+  "msg": "Tab erreicht Bedienelemente (BUTTON:nav); Enter öffnet Kachel"
+ },
+ {
+  "ids": [
+   "A-131"
+  ],
+  "ok": true,
+  "msg": "Fokusrahmen sichtbar bei Tastaturbedienung (solid 2px)"
+ },
+ {
+  "ids": [
+   "A-131"
+  ],
+  "ok": true,
+  "msg": "Escape schließt das Kachelmenü"
+ },
+ {
+  "ids": [
+   "A-128"
+  ],
+  "ok": true,
+  "msg": "Startseite mit 20 Reisen und 100 Preisen: 0.10 s (Lokaltest ohne Netz, Datenbankzugriff simuliert)"
+ },
+ {
+  "ids": [
+   "A-134"
+  ],
+  "ok": true,
+  "msg": "Keine JavaScript-Fehler in der Konsole: []"
+ }
+]

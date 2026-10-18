@@ -82,7 +82,13 @@ def main():
                 g.write(f.read())
     with open(os.path.join(ROOT, 'BACKLOG.md'), 'w', encoding='utf-8') as f:
         f.write(backlog_md(backlog, trips))
-    print('Gespiegelt: %d Reisen, %d Personen, %d Backlog-Einträge, %d Preise' % (len(trips), len(leute), len(backlog), len(preise)))
+    digests = lade(ordner, 'digests')
+    titel = {t['id']: t['titel'] for t in trips}
+    os.makedirs(os.path.join(ROOT, 'digests'), exist_ok=True)
+    for d in digests:
+        with open(os.path.join(ROOT, 'digests', '%s_%s.md' % (d.get('datum', 'ohne-datum'), d.get('trip', 'ohne-reise'))), 'w', encoding='utf-8') as f:
+            f.write('# Digest %s · Stand %s\n\nEmpfehlung: **%s**\n\n%s\n' % (titel.get(d.get('trip'), d.get('trip')), d.get('datum', ''), d.get('empfehlung', '–'), d.get('markdown', '')))
+    print('Gespiegelt: %d Reisen, %d Personen, %d Backlog-Einträge, %d Preise, %d Digests' % (len(trips), len(leute), len(backlog), len(preise), len(digests)))
 
 
 if __name__ == '__main__':
