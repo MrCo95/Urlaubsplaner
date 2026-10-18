@@ -12,7 +12,7 @@ Hinweis zur Unabhängigkeit: Der Prüfer ist dasselbe Modell, das die App gebaut
 |---|---|---|---|---|
 | 137 | 121 | 14 | 0 | 2 |
 
-Browser-Tests: 150 Prüfungen, 149 bestanden, 1 durchgefallen (die eine offene ist A-098, Grenze der Plattform). Konsolenfehler: keine.
+Browser-Tests: 151 Prüfungen, 150 bestanden, 1 durchgefallen (die eine offene ist A-098, Grenze der Plattform). Konsolenfehler: keine.
 
 ## Was geprüft wurde und wie
 

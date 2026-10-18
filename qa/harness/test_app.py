@@ -357,13 +357,19 @@ def main():
         ok('A-137', len(sent) == 1 and 'Jetzt suchen' in sent[0]['text'] and tid2 in sent[0]['text'], 'Claude wird per Kommentar geweckt: „%s“' % (sent[0]['text'][:90] if sent else ''))
         ok('A-137', 'Suche gestartet' in msg0, 'Rückmeldung an Martin: „%s“' % msg0)
         ok('A-137', 'Suche angefragt' in pg.inner_text('#u-opt'), 'Übersicht zeigt „Suche angefragt“ mit Uhrzeit')
-        # Jetzt suchen im Detail
+        # Jetzt suchen im Detail (nachdem das Team den ersten Auftrag erledigt hat)
+        for k_, v_ in docs(pg, 'auftraege').items(): pg.evaluate("([k, v]) => window.__db.doc('auftraege/' + k).update({status: 'erledigt'})", [k_, v_])
+        pg.wait_for_timeout(300)
         pg.click('#dhead [data-act=suche]'); pg.wait_for_timeout(400)
         ok('A-137', len(pg.evaluate('window.__sent')) == 2 and sum(1 for a in docs(pg, 'auftraege').values() if a['art'] == 'suche') == 2, '„Jetzt suchen“ im Detail legt Auftrag an und weckt Claude')
+        pg.click('#dhead [data-act=suche]'); pg.wait_for_timeout(300)
+        ok('A-137', 'läuft schon' in toast(pg) and len(pg.evaluate('window.__sent')) == 2 and sum(1 for a in docs(pg, 'auftraege').values() if a['art'] == 'suche') == 2, 'Erneutes „Jetzt suchen“ bei offenem Auftrag legt keinen Doppelauftrag an (Toast: „%s“)' % toast(pg))
         # Optimieren weckt ebenfalls
         pg.click('#dhead [data-act=optimieren]'); pg.wait_for_selector('#mf'); submit(pg); pg.wait_for_timeout(300)
         ok('A-137', len(pg.evaluate('window.__sent')) == 3, 'Optimieren weckt Claude ebenfalls')
-        # Kachelmenü
+        # Kachelmenü (Team hat zuvor alle Aufträge erledigt)
+        for k_ in list(docs(pg, 'auftraege')): pg.evaluate("(k) => window.__db.doc('auftraege/' + k).update({status: 'erledigt'})", k_)
+        pg.wait_for_timeout(300)
         pg.click('[data-act=nav][data-v=reisen]'); pg.wait_for_selector('#grid .card'); pg.click('[data-act=menu][data-id="%s"]' % tid2); pg.click('.menu button:has-text("Jetzt suchen")'); pg.wait_for_timeout(400)
         ok('A-137', len(pg.evaluate('window.__sent')) == 4, '„Jetzt suchen“ im Kachelmenü weckt Claude')
         # XSS im Suchtext

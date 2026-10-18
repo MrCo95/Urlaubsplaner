@@ -313,6 +313,8 @@ async function wecke(text) {
   } catch { return false; }
 }
 async function startSuche(tid, titel, text, art) {
+  const lauft = S.auftraege.find((x) => x.trip === tid && x.art === (art || 'suche') && x.status === 'offen');
+  if (lauft) { toast('Das läuft schon (angefragt ' + new Date(lauft.datum).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + '). Das Ergebnis erscheint in dieser Reise.'); return; }
   const woke = wecke(`Jetzt suchen: „${titel}“ (Reise-ID ${tid}, Auftrag ${art || 'suche'}). ${text || ''}`);
   const ok = await auftrag(art || 'suche', text, tid);
   const w = await woke;

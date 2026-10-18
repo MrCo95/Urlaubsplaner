@@ -674,7 +674,7 @@
    "A-137"
   ],
   "ok": true,
-  "msg": "Claude wird per Kommentar geweckt: „Jetzt suchen: „Mallorca 2027“ (Reise-ID wuhm0vzmek, Auftrag suche). Wunsch: Mallorca, 2 Er“"
+  "msg": "Claude wird per Kommentar geweckt: „Jetzt suchen: „Mallorca 2027“ (Reise-ID qgpdko4o5z, Auftrag suche). Wunsch: Mallorca, 2 Er“"
  },
  {
   "ids": [
@@ -696,6 +696,13 @@
   ],
   "ok": true,
   "msg": "„Jetzt suchen“ im Detail legt Auftrag an und weckt Claude"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Erneutes „Jetzt suchen“ bei offenem Auftrag legt keinen Doppelauftrag an (Toast: „Das läuft schon (angefragt 15:25). Das Ergebnis erscheint in dieser Reise.“)"
  },
  {
   "ids": [
@@ -1075,7 +1082,7 @@
    "A-128"
   ],
   "ok": true,
-  "msg": "Startseite mit 20 Reisen und 100 Preisen: 0.14 s (Lokaltest ohne Netz, Datenbankzugriff simuliert)"
+  "msg": "Startseite mit 20 Reisen und 100 Preisen: 0.12 s (Lokaltest ohne Netz, Datenbankzugriff simuliert)"
  },
  {
   "ids": [
