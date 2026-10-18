@@ -1,0 +1,76 @@
+[
+  {
+    "bewertung": null,
+    "datum": "2026-10-18",
+    "impuls": true,
+    "notiz": "Impuls vom Scout, Oktober 2026",
+    "preisrahmen": "ab ca. 760 € p. P./Woche (TUI-Richtwert)",
+    "prio": "mittel",
+    "risiko": "In den NRW-Ferien deutlich teurer, Kinderfestpreise gehen früh weg.",
+    "status": "neu",
+    "tags": [
+      "Strand",
+      "Flug",
+      "Mittelmeer"
+    ],
+    "titel": "Mallorca, Nordosten (Cala Ratjada/Alcúdia)",
+    "trips": [
+      "trip_sommer2027"
+    ],
+    "typ": "Idee",
+    "url": "",
+    "warum": "Flache Sandbuchten, Familienhotels mit Kinderbetreuung, Direktflug ab CGN/DUS ca. 2,5 Std.",
+    "zeitraum": "Juni oder Anfang September",
+    "id": "imp1"
+  },
+  {
+    "bewertung": null,
+    "datum": "2026-10-18",
+    "impuls": true,
+    "notiz": "Impuls vom Scout, Oktober 2026",
+    "preisrahmen": "ab ca. 670 € p. P./Woche (TUI-Richtwert)",
+    "prio": "mittel",
+    "risiko": "Flug ca. 4 Std., Hitze im Hochsommer, Einreise-/Reisehinweise prüfen.",
+    "status": "neu",
+    "tags": [
+      "Strand",
+      "Flug",
+      "All-inclusive",
+      "Resort"
+    ],
+    "titel": "Türkische Riviera (Side/Belek, Familienresort)",
+    "trips": [
+      "trip_sommer2027"
+    ],
+    "typ": "Idee",
+    "url": "",
+    "warum": "Kinderclub, Aquapark, All-inclusive: meist bestes Preis-Leistungs-Verhältnis mit kleinem Kind.",
+    "zeitraum": "Mitte Juni bis Anfang Juli oder September",
+    "id": "imp2"
+  },
+  {
+    "bewertung": null,
+    "datum": "2026-10-18",
+    "impuls": true,
+    "notiz": "Impuls vom Scout, Oktober 2026",
+    "preisrahmen": "Schätzung (nicht recherchiert): 1.800–3.000 € Haus/Woche im Sommer",
+    "prio": "mittel",
+    "risiko": "Wetter unsicher, lange Autofahrt, Hochsommer-Häuser früh ausgebucht.",
+    "status": "neu",
+    "tags": [
+      "Strand",
+      "Auto",
+      "Ferienhaus",
+      "Natur/Aktiv"
+    ],
+    "titel": "Dänemark Nordsee (Ferienhaus, z. B. Römö/Blåvand)",
+    "trips": [
+      "trip_sommer2027"
+    ],
+    "typ": "Idee",
+    "url": "",
+    "warum": "Anreise per Auto ab Köln ca. 8 Std., Ferienhaus mit Platz, kein Flugstress mit Kind.",
+    "zeitraum": "Juli bis Mitte August",
+    "id": "imp3"
+  }
+]

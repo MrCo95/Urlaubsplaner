@@ -1,64 +1,66 @@
 [
   {
-    "id": "trip_sommer2027",
-    "titel": "Sommer 2027 (Beispiel)",
-    "status": "Beobachten",
-    "zeitraum": {
-      "fruehester_start": "2027-07-19",
-      "spaetester_rueckflug": "2027-08-31",
-      "dauer_min": 7,
-      "dauer_max": 14,
-      "flex_tage": 3
-    },
-    "ziele": {
-      "modus": "offen",
-      "text": ""
-    },
-    "reiseart": [
-      "Strand"
-    ],
-    "budget": {
-      "modus": "offen",
-      "gesamt": null,
-      "pro_person_max": null
-    },
-    "unterkunft": {
-      "typ": [
-        "Hotel",
-        "Resort"
-      ],
-      "min_sterne": 0,
-      "min_bewertung": 0.0,
-      "verpflegung": "egal"
-    },
     "anreise": {
-      "modi": [
-        "Flug"
-      ],
-      "direktflug": false,
-      "max_reisezeit_h": null,
       "abflughaefen": [
         "Köln/Bonn (CGN)",
         "Düsseldorf (DUS)"
+      ],
+      "direktflug": false,
+      "max_reisezeit_h": null,
+      "modi": [
+        "Flug"
       ]
     },
-    "muss": [],
-    "nogos": [],
+    "archiviert": false,
+    "beobachten": {
+      "checks_pro_woche": 2,
+      "schwelle_prozent": 10
+    },
+    "budget": {
+      "gesamt": null,
+      "pro_person_max": null
+    },
+    "emoji": "🏖️",
+    "erstellt": "2026-10-18T10:00:00.000Z",
+    "geaendert": "2026-10-18T10:00:00.000Z",
+    "gruppe": {
+      "aktiv": false,
+      "haushalte": [],
+      "wuensche": ""
+    },
     "mitreisende": [
       "p_martin",
       "p_kristina",
       "p_matteo"
     ],
-    "gruppe": {
-      "aktiv": false,
-      "haushalte": []
+    "muss": [],
+    "nogos": [],
+    "notizen": "BEISPIEL mit Platzhalterwerten (NRW-Sommerferien 2027: 19.07.–31.08.). Zeitraum, Budget (offen) und Kriterien bitte anpassen. Matteo (geb. 06/2021) wird voraussichtlich im Sommer 2027 eingeschult: Rückreise vor Schulbeginn am 01.09.2027.",
+    "reiseart": [
+      "Strand"
+    ],
+    "status": "Beobachten",
+    "titel": "Sommer 2027 (Beispiel)",
+    "unterkunft": {
+      "min_bewertung": 0,
+      "min_sterne": 0,
+      "typ": [
+        "Hotel",
+        "Resort"
+      ],
+      "verpflegung": "egal"
     },
-    "beobachten": {
-      "checks_pro_woche": 2,
-      "schwelle_prozent": 10
+    "zeitraum": {
+      "dauer_max": 14,
+      "dauer_min": 7,
+      "flex_tage": 3,
+      "fruehester_start": "2027-07-19",
+      "spaetester_rueckflug": "2027-08-31"
     },
-    "notizen": "BEISPIEL mit Platzhalterwerten (NRW-Sommerferien 2027). Zeitraum, Budget (offen) und Kriterien bitte in der Maske anpassen.",
-    "geaendert": "2026-10-18T09:34",
-    "erstellt": "2026-10-18T09:34"
+    "ziel": {
+      "modus": "offen",
+      "text": ""
+    },
+    "id": "trip_sommer2027"
   }
 ]

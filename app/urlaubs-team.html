@@ -1,0 +1,744 @@
+<title>Urlaubs-Team</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: Kopfleiste mit Reiter, darunter Filter und ein Kachelraster (eine Kachel = eine Reise); Detailansicht mit Tabs. Airbnb-nahe Ruhe: viel Weißraum, große Bildfläche, abgerundete Kacheln. */
+:root {
+  --font: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --bg: #ffffff; --soft: #f7f6f3; --line: #e8e5df; --line-2: #d6d2ca;
+  --ink: #232220; --ink-2: #5d5a55; --ink-3: #77736c;
+  --accent: #d92d4b; --accent-ink: #ffffff; --accent-soft: #fdeaee;
+  --ok: #17794b; --ok-soft: #e1f3e9; --warn: #8f5a07; --warn-soft: #fbefd2; --bad: #b3312b; --bad-soft: #fae2e0; --info: #1d5fa8; --info-soft: #e2edf9; --idle: #5d5a55; --idle-soft: #eeece8;
+  --shadow: 0 1px 2px rgba(30,25,20,.06), 0 6px 20px rgba(30,25,20,.07);
+  --shadow-hover: 0 2px 4px rgba(30,25,20,.08), 0 14px 34px rgba(30,25,20,.14);
+  --r: 16px; --r-s: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161514; --soft: #1f1e1c; --line: #34312d; --line-2: #4a4641;
+    --ink: #f3f0ec; --ink-2: #bdb8b1; --ink-3: #9d988f;
+    --accent: #ff6279; --accent-ink: #2a0a10; --accent-soft: #3a1b22;
+    --ok: #6bd6a3; --ok-soft: #173a2b; --warn: #eab75a; --warn-soft: #3b2e12; --bad: #ff948b; --bad-soft: #43201e; --info: #7db6f0; --info-soft: #1a2f47; --idle: #bdb8b1; --idle-soft: #2a2825;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3); --shadow-hover: 0 2px 4px rgba(0,0,0,.5), 0 14px 34px rgba(0,0,0,.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161514; --soft: #1f1e1c; --line: #34312d; --line-2: #4a4641;
+  --ink: #f3f0ec; --ink-2: #bdb8b1; --ink-3: #9d988f;
+  --accent: #ff6279; --accent-ink: #2a0a10; --accent-soft: #3a1b22;
+  --ok: #6bd6a3; --ok-soft: #173a2b; --warn: #eab75a; --warn-soft: #3b2e12; --bad: #ff948b; --bad-soft: #43201e; --info: #7db6f0; --info-soft: #1a2f47; --idle: #bdb8b1; --idle-soft: #2a2825;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3); --shadow-hover: 0 2px 4px rgba(0,0,0,.5), 0 14px 34px rgba(0,0,0,.45);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.5 var(--font); color: var(--ink); background: var(--bg); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px; min-height: 100vh; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 40; background: var(--bg); }
+h1, h2, h3, p { margin: 0; text-wrap: balance; }
+h1 { font-size: 28px; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
+h2 { font-size: 20px; font-weight: 650; letter-spacing: -.01em; }
+h3 { font-size: 13px; font-weight: 650; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--accent); }
+.wrap { max-width: 1240px; margin: 0 auto; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.ico { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* Kopf */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 12px max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); border-bottom: 1px solid var(--line); }
+.bar-in { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap; }
+.brand { font-weight: 700; font-size: 19px; letter-spacing: -.02em; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.nav { display: flex; gap: 4px; margin-left: auto; }
+.nav button { border: 0; background: none; padding: 12px 14px; font-weight: 550; color: var(--ink-2); border-bottom: 2px solid transparent; }
+.nav button[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+.nav button:hover { color: var(--ink); }
+main { padding-top: 28px; }
+.page { animation: in .25s ease-out; }
+@keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .001ms !important; transition-duration: .001ms !important; } }
+
+/* Filter */
+.filters { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; margin: 20px 0 24px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 7px 14px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--bg); color: var(--ink-2); font-weight: 550; font-size: 14px; }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.field-s { padding: 8px 12px; border: 1px solid var(--line-2); border-radius: var(--r-s); background: var(--bg); min-width: 0; }
+.filters .grow { flex: 1 1 200px; }
+
+/* Kacheln */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 28px 20px; }
+.card { position: relative; display: flex; flex-direction: column; min-width: 0; border-radius: var(--r); background: var(--bg); text-align: left; padding: 0; border: 0; transition: transform .18s ease; }
+.card:hover { transform: translateY(-3px); }
+.card:hover .img { box-shadow: var(--shadow-hover); }
+.img { position: relative; aspect-ratio: 4 / 3; border-radius: var(--r); display: grid; place-items: center; font-size: 56px; box-shadow: var(--shadow); transition: box-shadow .18s; overflow: hidden; }
+.img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.badge { position: absolute; left: 12px; top: 12px; z-index: 2; padding: 4px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 650; background: var(--bg); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.18); }
+.badge.s-Beobachten { color: var(--warn); } .badge.s-Buchungsreif { color: var(--ok); } .badge.s-Gebucht { color: var(--ok); } .badge.s-Recherche { color: var(--info); }
+.kebab { position: absolute; right: 10px; top: 10px; z-index: 3; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--bg); display: grid; place-items: center; box-shadow: 0 1px 4px rgba(0,0,0,.18); }
+.menu { position: absolute; right: 10px; top: 48px; z-index: 5; min-width: 180px; padding: 6px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-hover); }
+.menu button { display: block; width: 100%; padding: 9px 12px; border: 0; background: none; border-radius: 8px; text-align: left; }
+.menu button:hover { background: var(--soft); }
+.open-card { all: unset; cursor: pointer; display: block; padding-top: 12px; }
+.open-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
+.c-title { font-weight: 650; font-size: 16px; overflow-wrap: anywhere; }
+.c-sub { color: var(--ink-2); font-size: 14px; overflow-wrap: anywhere; }
+.c-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.price { font-weight: 650; }
+.price small { font-weight: 400; color: var(--ink-3); }
+.trend { font-weight: 650; font-size: 13px; padding: 1px 7px; border-radius: 999px; }
+.trend.down { background: var(--ok-soft); color: var(--ok); } .trend.up { background: var(--bad-soft); color: var(--bad); } .trend.flat { background: var(--idle-soft); color: var(--idle); }
+.meta { color: var(--ink-3); font-size: 13px; }
+.new-card .img { background: var(--soft); border: 2px dashed var(--line-2); box-shadow: none; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; color: var(--ink-2); font-size: 15px; font-weight: 600; }
+.new-card .img .plus { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+.avatars { display: flex; }
+.av { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #fff; border: 2px solid var(--bg); margin-left: -7px; }
+.av:first-child { margin-left: 0; }
+.spark { color: var(--ink-3); }
+
+/* Allgemein */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: var(--r-s); border: 1px solid var(--line-2); background: var(--bg); font-weight: 600; text-decoration: none; color: var(--ink); }
+.btn:hover { background: var(--soft); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.07); }
+.btn.sm { padding: 5px 11px; font-size: 13.5px; }
+.btn.danger { color: var(--bad); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.box { border: 1px solid var(--line); border-radius: var(--r); padding: 20px; background: var(--bg); }
+.soft { background: var(--soft); border-radius: var(--r); padding: 20px; }
+.empty { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 44px 20px; color: var(--ink-2); border: 1px dashed var(--line-2); border-radius: var(--r); }
+.empty b { color: var(--ink); font-size: 17px; }
+.status { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 650; background: var(--idle-soft); color: var(--idle); }
+.status.ok { background: var(--ok-soft); color: var(--ok); } .status.warn { background: var(--warn-soft); color: var(--warn); } .status.bad { background: var(--bad-soft); color: var(--bad); } .status.info { background: var(--info-soft); color: var(--info); }
+.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.sp { flex: 1; }
+.back { border: 0; background: none; color: var(--ink-2); font-weight: 600; padding: 0; display: inline-flex; gap: 6px; align-items: center; margin-bottom: 14px; }
+.hero { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px; }
+.hero .img { width: 200px; aspect-ratio: 4/3; font-size: 48px; flex: none; }
+.hero .txt { flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.tabs button { border: 0; background: none; padding: 11px 16px; font-weight: 600; color: var(--ink-2); border-bottom: 2px solid transparent; white-space: nowrap; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+.fact { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+.fact h3 { margin-bottom: 4px; }
+.fact div { overflow-wrap: anywhere; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 24px; align-items: start; }
+@media (max-width: 820px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { padding: 2px 9px; border-radius: 999px; background: var(--soft); border: 1px solid var(--line); font-size: 12.5px; color: var(--ink-2); }
+.tag.no { background: var(--bad-soft); border-color: transparent; color: var(--bad); }
+.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tbl th { text-align: left; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.tbl td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl td.n, .tbl th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.scroll-x { overflow-x: auto; }
+.prop { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; border-top: 1px solid var(--line); }
+.prop:first-child { border-top: 0; }
+.prop .pt { flex: 1; min-width: 0; }
+.prop .pt b { display: block; overflow-wrap: anywhere; }
+.md h1, .md h2, .md h3 { margin: 14px 0 6px; text-transform: none; letter-spacing: 0; color: var(--ink); font-size: 16px; }
+.md p, .md ul { margin: 6px 0; } .md ul { padding-left: 20px; }
+.md table { border-collapse: collapse; font-size: 14px; } .md td, .md th { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+
+/* Reiseplan */
+.day { border: 1px solid var(--line); border-radius: var(--r); padding: 16px; background: var(--bg); }
+.day.over { border-color: var(--accent); background: var(--accent-soft); }
+.day-h { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.ent { display: flex; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); margin-bottom: 8px; cursor: grab; }
+.ent.drag { opacity: .4; }
+.ent .tm { width: 52px; flex: none; font-weight: 650; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.ent .bd { flex: 1; min-width: 0; }
+.ent .bd b { overflow-wrap: anywhere; }
+.drop { min-height: 8px; }
+.ampel { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dot { width: 12px; height: 12px; border-radius: 50%; background: var(--idle); }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.check { display: flex; gap: 10px; align-items: center; padding: 6px 0; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
+.check.done span { text-decoration: line-through; color: var(--ink-3); }
+
+/* Formulare */
+dialog { width: min(720px, calc(100vw - 24px)); max-height: calc(100vh - 24px); padding: 0; border: 1px solid var(--line); border-radius: 20px; background: var(--bg); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(10,8,6,.5); }
+.dlg-h { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.dlg-b { padding: 20px; display: flex; flex-direction: column; gap: 18px; }
+.dlg-f { position: sticky; bottom: 0; display: flex; gap: 10px; justify-content: flex-end; padding: 14px 20px; background: var(--bg); border-top: 1px solid var(--line); }
+.fs { display: flex; flex-direction: column; gap: 12px; }
+.g2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+label.f { display: flex; flex-direction: column; gap: 5px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); min-width: 0; }
+.f input, .f select, .f textarea, .in { width: 100%; padding: 9px 12px; border: 1px solid var(--line-2); border-radius: var(--r-s); background: var(--bg); font-weight: 400; color: var(--ink); min-width: 0; }
+.f textarea { min-height: 76px; resize: vertical; }
+.pick { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--line-2); border-radius: 999px; font-weight: 500; font-size: 14px; cursor: pointer; }
+.pick input { accent-color: var(--accent); }
+.hint { font-size: 13px; color: var(--ink-3); font-weight: 400; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 60; padding: 10px 18px; border-radius: 12px; background: var(--ink); color: var(--bg); box-shadow: var(--shadow-hover); max-width: calc(100vw - 32px); }
+.skel { border-radius: var(--r); background: linear-gradient(90deg, var(--soft), var(--line), var(--soft)); background-size: 200% 100%; animation: sh 1.3s linear infinite; }
+@keyframes sh { to { background-position: -200% 0; } }
+@media (max-width: 560px) { h1 { font-size: 24px; } .hero .img { width: 100%; } .nav button { padding: 10px; } .grid { gap: 24px 16px; } }
+</style>
+
+<div class="bar"><div class="bar-in wrap">
+  <div class="brand"><svg class="ico" viewBox="0 0 24 24" style="width:22px;height:22px"><path d="M2 16l20-8-4 12-6-4-4 4v-5z"/></svg>Urlaubs-Team</div>
+  <nav class="nav" id="nav" aria-label="Bereiche"></nav>
+</div></div>
+<main class="wrap" id="main"><div class="grid" style="margin-top:8px"><div class="skel" style="aspect-ratio:4/3"></div><div class="skel" style="aspect-ratio:4/3"></div><div class="skel" style="aspect-ratio:4/3"></div></div></main>
+<dialog id="dlg"></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+'use strict';
+/* ---------- Helfer ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const EUR = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+const eur = (n) => (n == null || n === '' ? '–' : EUR.format(n));
+const dat = (iso, kurz) => (iso ? new Date(iso + 'T12:00:00').toLocaleDateString('de-DE', kurz ? { day: 'numeric', month: 'numeric' } : { day: 'numeric', month: 'short', year: 'numeric' }) : '–');
+const heute = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
+const addDays = (iso, n) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+const jetzt = () => new Date().toISOString();
+const uid = () => Math.random().toString(36).slice(2, 10);
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+const lines = (t) => String(t || '').split(/\n|,/).map((x) => x.trim()).filter(Boolean);
+const ico = (p) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="${p}"/></svg>`;
+const I = { plus: 'M12 5v14M5 12h14', dots: 'M5 12h.01M12 12h.01M19 12h.01', back: 'M15 18l-6-6 6-6', trash: 'M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14', edit: 'M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z', up: 'M7 17L17 7M8 7h9v9', link: 'M10 13a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1M14 11a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1' };
+let toastT = 0;
+function toast(t) { const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, 2800); }
+const store = { get(k, d) { try { const v = localStorage.getItem('ut.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem('ut.' + k, JSON.stringify(v)); } catch { /* ohne Speicher weiter */ } } };
+
+const STATUS = ['Idee', 'Recherche', 'Beobachten', 'Buchungsreif', 'Gebucht'];
+const ARTEN = ['Strand', 'Städtetrip', 'Natur/Aktiv', 'Rundreise', 'Skifahren', 'Wellness', 'Sonstiges'];
+const EMOJI = { Strand: '🏖️', 'Städtetrip': '🏙️', 'Natur/Aktiv': '🥾', Rundreise: '🗺️', Skifahren: '⛷️', Wellness: '🧖', Sonstiges: '✈️' };
+const GRADS = ['linear-gradient(135deg,#ff9a6b,#ff5e7e)', 'linear-gradient(135deg,#43c6ac,#2b7bd0)', 'linear-gradient(135deg,#a8e063,#3fa77a)', 'linear-gradient(135deg,#b69cff,#6c7bff)', 'linear-gradient(135deg,#ffd27a,#f08a5d)', 'linear-gradient(135deg,#8fa3b8,#4b5d73)'];
+const UNTERKUNFT = ['Hotel', 'Ferienwohnung/-haus', 'Resort'];
+const VERPFLEGUNG = ['egal', 'Frühstück', 'Halbpension', 'Vollpension', 'All-inclusive', 'Selbstversorger'];
+const VERKEHR = ['Flug', 'Bahn', 'Auto'];
+const FLUGHAEFEN = ['Köln/Bonn (CGN)', 'Düsseldorf (DUS)', 'Frankfurt (FRA)', 'Weeze (NRN)', 'Dortmund (DTM)'];
+const BEZIEHUNG = ['Familie', 'Kind', 'Freunde', 'Sonstige'];
+const BL_TYPEN = ['Link', 'Idee', 'Artikel', 'Video', 'Unterkunft', 'Restaurant', 'Aktivität', 'Aufgabe', 'Notiz'];
+const BL_STATUS = ['neu', 'geprüft', 'übernommen', 'verworfen'];
+const PRIO = ['hoch', 'mittel', 'niedrig'];
+const hash = (s) => [...String(s)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
+const AVCOL = ['#d9534f', '#2f8f83', '#6a5acd', '#c27a1b', '#2b7bd0', '#8a5a9e'];
+
+/* ---------- Zustand ---------- */
+const S = { rw: false, who: 'Du', view: 'reisen', tripId: null, tab: 'uebersicht', menu: null,
+  trips: [], travelers: [], backlog: [], prices: [], vorschlaege: [], auftraege: [], digests: [], plan: null, versions: [], ready: {},
+  f: Object.assign({ status: '', person: '', q: '', sort: 'updated', archiv: false }, store.get('filter', {})),
+  bf: Object.assign({ status: '', typ: '', q: '' }, store.get('bfilter', {})) };
+let db = null, shellKey = '', raf = 0, dirty = false, subsTrip = [];
+
+const trip = (id) => S.trips.find((t) => t.id === id);
+const person = (id) => S.travelers.find((p) => p.id === id);
+const initials = (n) => String(n || '?').trim().split(/\s+/).map((x) => x[0]).slice(0, 2).join('').toUpperCase();
+const avatars = (ids) => `<div class="avatars">${(ids || []).map((i) => person(i)).filter(Boolean).map((p) => `<span class="av" title="${esc(p.name)}" style="background:${AVCOL[hash(p.name) % AVCOL.length]}">${esc(initials(p.name))}</span>`).join('')}</div>`;
+const alter = (p) => { if (p.geburt_monat && /^\d{4}-\d{2}$/.test(p.geburt_monat)) { const [y, m] = p.geburt_monat.split('-').map(Number); const n = new Date(); let a = n.getFullYear() - y; if (n.getMonth() + 1 < m) a--; return a; } return p.alter; };
+
+function preise(tid) {
+  const rows = S.prices.filter((p) => p.trip === tid && p.preis_pp != null);
+  const byDate = {};
+  rows.forEach((r) => { byDate[r.datum] = Math.min(byDate[r.datum] ?? Infinity, r.preis_pp); });
+  const dates = Object.keys(byDate).sort();
+  const last = dates[dates.length - 1], prev = dates[dates.length - 2];
+  const cur = rows.filter((r) => r.datum === last).sort((a, b) => a.preis_pp - b.preis_pp)[0];
+  const trend = prev ? (byDate[last] < byDate[prev] ? 'down' : byDate[last] > byDate[prev] ? 'up' : 'flat') : null;
+  return { dates, series: dates.map((d) => byDate[d]), last, cur, trend, diff: prev ? byDate[last] - byDate[prev] : 0 };
+}
+function spark(vals) {
+  if (!vals || vals.length < 2) return '';
+  const w = 64, h = 22, mn = Math.min(...vals), mx = Math.max(...vals), r = mx - mn || 1;
+  const pts = vals.map((v, i) => [(i / (vals.length - 1)) * (w - 4) + 2, h - 3 - ((v - mn) / r) * (h - 6)]);
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-label="Preisverlauf"><polyline points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="${pts.at(-1)[0]}" cy="${pts.at(-1)[1]}" r="2.6" fill="var(--accent)"/></svg>`;
+}
+
+/* ---------- Datenbank ---------- */
+function watch(col, key) {
+  return db.collection(col).onSnapshot((s) => { S[key] = s.docs.map((d) => ({ id: d.id, ...d.data() })); S.ready[key] = true; render(); }, () => { S.ready[key] = true; render(); });
+}
+function watchTrip(id) {
+  subsTrip.forEach((u) => u()); subsTrip = []; S.plan = null; S.versions = [];
+  subsTrip.push(db.doc('plans/' + id).onSnapshot((s) => { S.plan = s.exists ? s.data() : null; S.ready.plan = true; render(); }, () => { S.ready.plan = true; render(); }));
+  subsTrip.push(db.collection('trips/' + id + '/versions').onSnapshot((s) => { S.versions = s.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.datum || '').localeCompare(a.datum || '')); render(); }, () => {}));
+}
+async function guard(fn, msg) { try { return await fn(); } catch (e) { toast((msg || 'Speichern') + ' hat nicht geklappt: ' + (e && e.message ? e.message : 'unbekannter Fehler')); return null; } }
+
+async function writeTrip(id, next, was) {
+  const old = trip(id);
+  const skip = new Set(['id', 'geaendert']);
+  const nachher = {}, vorher = {};
+  Object.keys(next).forEach((k) => { if (skip.has(k)) return; if (!old || !same(next[k], old[k])) { nachher[k] = next[k]; vorher[k] = old ? (old[k] ?? null) : null; } });
+  if (old && !Object.keys(nachher).length) return false;
+  const doc = { ...next }; delete doc.id; doc.geaendert = jetzt(); if (!old) doc.erstellt = doc.erstellt || jetzt();
+  await db.doc('trips/' + id).set(doc);
+  await db.collection('trips/' + id + '/versions').add({ datum: jetzt(), wer: S.who, was: was || (old ? 'Geändert: ' + Object.keys(nachher).join(', ') : 'Reise angelegt'), vorher, nachher });
+  return true;
+}
+async function undo(vid) {
+  const v = S.versions.find((x) => x.id === vid); const t = trip(S.tripId); if (!v || !t) return;
+  const next = { ...clone(t), ...clone(v.vorher || {}) };
+  await guard(async () => { await writeTrip(t.id, next, 'Rückgängig: ' + v.was); toast('Rückgängig gemacht'); }, 'Rückgängig');
+}
+async function savePlan(p) { await guard(() => db.doc('plans/' + S.tripId).set(p), 'Reiseplan speichern'); }
+async function auftrag(art, text, tid) {
+  await guard(async () => { await db.collection('auftraege').add({ trip: tid || null, art, text: text || '', status: 'offen', datum: jetzt(), wer: S.who }); }, 'Auftrag ablegen');
+}
+
+/* ---------- Rendern (Shell einmal, danach nur die dynamischen Bereiche) ---------- */
+function render() { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; draw(); }); }
+function draw() {
+  const a = document.activeElement;
+  if (a && a.closest && a.closest('#main') && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && !a.dataset.live) { dirty = true; return; }
+  dirty = false;
+  $('#nav').innerHTML = [['reisen', 'Reisen'], ['backlog', 'Backlog'], ['leute', 'Mitreisende']].map(([k, n]) => `<button data-act="nav" data-v="${k}" ${((S.view === 'reise' ? 'reisen' : S.view) === k) ? 'aria-current="page"' : ''}>${n}</button>`).join('');
+  const key = S.view + ':' + (S.tripId || '') + ':' + (S.view === 'reise' ? S.tab : '');
+  const V = S.view === 'reise' ? DETAIL : VIEWS[S.view];
+  if (!V) return;
+  if (S.view === 'reise' && !trip(S.tripId) && S.ready.trips) { S.view = 'reisen'; return draw(); }
+  if (key !== shellKey) { shellKey = key; $('#main').innerHTML = '<div class="page">' + V.shell() + '</div>'; window.scrollTo(0, 0); }
+  V.fill();
+}
+document.addEventListener('focusout', () => { if (dirty) setTimeout(render, 0); });
+
+const SKEL = '<div class="grid"><div class="skel" style="aspect-ratio:4/3"></div><div class="skel" style="aspect-ratio:4/3"></div><div class="skel" style="aspect-ratio:4/3"></div></div>';
+
+/* ===== Startseite: Kacheln ===== */
+const VIEWS = {};
+VIEWS.reisen = {
+  shell() {
+    return `<div class="row"><h1>Reisen</h1><div class="sp"></div></div>
+    <div class="filters">
+      <div class="chips" id="f-status"></div>
+      <select class="field-s" id="f-person" data-live="1" aria-label="Nach Mitreisenden filtern"></select>
+      <input class="field-s grow" id="f-q" data-live="1" type="search" placeholder="Reise suchen" aria-label="Reise suchen" value="${esc(S.f.q)}">
+      <select class="field-s" id="f-sort" data-live="1" aria-label="Sortierung"><option value="updated">Zuletzt aktualisiert</option><option value="datum">Reisedatum</option><option value="preis">Preis</option></select>
+      <label class="row" style="gap:6px;font-size:14px;color:var(--ink-2)"><input type="checkbox" id="f-archiv" data-live="1" style="accent-color:var(--accent)">Archiv</label>
+    </div><div id="grid"></div>`;
+  },
+  fill() {
+    $('#f-status').innerHTML = ['', ...STATUS].map((s) => `<button class="chip" data-act="fstatus" data-v="${s}" aria-pressed="${S.f.status === s}">${s || 'Alle'}</button>`).join('');
+    const ps = $('#f-person'); if (ps.dataset.n !== String(S.travelers.length)) { ps.innerHTML = '<option value="">Alle Mitreisenden</option>' + S.travelers.map((p) => `<option value="${p.id}">${esc(p.name)}</option>`).join(''); ps.dataset.n = S.travelers.length; }
+    ps.value = S.f.person; $('#f-sort').value = S.f.sort; $('#f-archiv').checked = S.f.archiv;
+    const g = $('#grid');
+    if (!S.ready.trips) { g.innerHTML = SKEL; return; }
+    const q = S.f.q.trim().toLowerCase();
+    let list = S.trips.filter((t) => !!t.archiviert === S.f.archiv && (!S.f.status || t.status === S.f.status) && (!S.f.person || (t.mitreisende || []).includes(S.f.person)) && (!q || [t.titel, t.ziel && t.ziel.text, t.notizen].join(' ').toLowerCase().includes(q)));
+    const pr = (t) => preise(t.id).cur?.preis_pp ?? Infinity;
+    list.sort((a, b) => S.f.sort === 'preis' ? pr(a) - pr(b) : S.f.sort === 'datum' ? (a.zeitraum?.fruehester_start || '9').localeCompare(b.zeitraum?.fruehester_start || '9') : (b.geaendert || '').localeCompare(a.geaendert || ''));
+    const neu = S.rw && !S.f.archiv ? `<div class="card new-card"><button class="open-card" data-act="neu" aria-label="Neue Reise anlegen"><div class="img"><span class="plus">${ico(I.plus)}</span>Neue Reise</div></button></div>` : '';
+    g.innerHTML = `<div class="grid">${neu}${list.map(card).join('')}</div>` + (!list.length && S.trips.length ? '<div class="empty" style="margin-top:20px"><b>Keine Treffer</b><span>Filter lockern oder die Suche leeren.</span></div>' : '') + (!S.trips.length ? '<div class="empty" style="margin-top:20px"><b>Noch keine Reise</b><span>Lege deine erste Reise an. Das Team recherchiert erst, wenn du es beauftragst.</span></div>' : '');
+  },
+};
+function card(t) {
+  const p = preise(t.id), art = (t.reiseart || [])[0], idx = hash(t.id) % GRADS.length;
+  const emoji = t.emoji || EMOJI[art] || '🌍';
+  const ziel = (t.ziel && t.ziel.text) || (t.ziel && t.ziel.modus === 'offen' ? 'Ziel offen' : '');
+  const zr = t.zeitraum && t.zeitraum.fruehester_start ? `${dat(t.zeitraum.fruehester_start, true)} – ${dat(t.zeitraum.spaetester_rueckflug, true) || ''}` : 'Zeitraum offen';
+  const preis = p.cur ? `<span class="price">ab ${eur(p.cur.preis_pp)} <small>p. P.${p.cur.preis_gesamt ? ' · ' + eur(p.cur.preis_gesamt) + ' gesamt' : ''}${p.cur.unsicher ? ' · Richtwert' : ''}</small></span>${p.trend ? `<span class="trend ${p.trend}" title="seit letztem Check">${p.trend === 'down' ? '↓ ' + eur(Math.abs(p.diff)) : p.trend === 'up' ? '↑ ' + eur(p.diff) : '→ gleich'}</span>` : ''}${spark(p.series)}` : '<span class="meta">Noch kein Preis</span>';
+  const menu = S.menu === t.id ? `<div class="menu" role="menu"><button data-act="open" data-id="${t.id}">Öffnen</button>${S.rw ? `<button data-act="optimieren" data-id="${t.id}">Optimieren</button><button data-act="dup" data-id="${t.id}">Duplizieren</button><button data-act="archiv" data-id="${t.id}">${t.archiviert ? 'Wiederherstellen' : 'Archivieren'}</button>` : ''}</div>` : '';
+  return `<div class="card"><div class="img" style="background:${GRADS[idx]}">${t.bild ? `<img src="${esc(t.bild)}" alt="">` : emoji}</div><span class="badge s-${esc(t.status)}">${esc(t.status)}</span><button class="kebab" data-act="menu" data-id="${t.id}" aria-label="Menü für ${esc(t.titel)}" aria-haspopup="true">${ico(I.dots)}</button>${menu}
+  <button class="open-card" data-act="open" data-id="${t.id}"><div class="c-title">${esc(t.titel)}</div><div class="c-sub">${esc(ziel)}${ziel ? ' · ' : ''}${esc(zr)}</div>
+  <div class="c-row">${avatars(t.mitreisende)}${preis}</div><div class="meta" style="margin-top:6px">${p.last ? 'Letzter Check ' + dat(p.last) : 'Noch kein Check'}</div></button></div>`;
+}
+
+/* ===== Detailansicht ===== */
+const TABS = [['uebersicht', 'Übersicht'], ['angebote', 'Angebote'], ['plan', 'Reiseplan'], ['backlog', 'Backlog'], ['verlauf', 'Verlauf']];
+const DETAIL = {
+  shell() { return `<div id="dhead"></div><div class="tabs" role="tablist" id="dtabs"></div><div id="dbody">${TAB[S.tab].shell()}</div>`; },
+  fill() {
+    const t = trip(S.tripId); if (!t) return;
+    const p = preise(t.id), idx = hash(t.id) % GRADS.length, emoji = t.emoji || EMOJI[(t.reiseart || [])[0]] || '🌍';
+    $('#dhead').innerHTML = `<button class="back" data-act="nav" data-v="reisen">${ico(I.back)}Alle Reisen</button>
+    <div class="hero"><div class="img" style="background:${GRADS[idx]}">${emoji}</div><div class="txt"><div class="row"><span class="status ${t.status === 'Beobachten' ? 'warn' : t.status === 'Buchungsreif' || t.status === 'Gebucht' ? 'ok' : t.status === 'Recherche' ? 'info' : ''}">${esc(t.status)}</span>${t.archiviert ? '<span class="status">Archiviert</span>' : ''}</div><h1>${esc(t.titel)}</h1>
+    <div class="row">${avatars(t.mitreisende)}<span class="c-sub">${esc((t.ziel && t.ziel.text) || 'Ziel offen')} · ${t.zeitraum && t.zeitraum.fruehester_start ? dat(t.zeitraum.fruehester_start) + ' bis ' + dat(t.zeitraum.spaetester_rueckflug) : 'Zeitraum offen'}</span></div>
+    ${p.cur ? `<div class="row"><span class="price">ab ${eur(p.cur.preis_pp)} <small>pro Person${p.cur.unsicher ? ' · Richtwert' : ''}</small></span>${p.trend ? `<span class="trend ${p.trend}">${p.trend === 'down' ? '↓' : p.trend === 'up' ? '↑' : '→'} ${eur(Math.abs(p.diff))}</span>` : ''}<span class="meta">Stand ${dat(p.last)}</span></div>` : ''}</div>
+    ${S.rw ? `<div class="row"><button class="btn primary" data-act="optimieren" data-id="${t.id}">Optimieren</button><button class="btn" data-act="edit" data-id="${t.id}">${ico(I.edit)}Bearbeiten</button></div>` : ''}</div>`;
+    $('#dtabs').innerHTML = TABS.map(([k, n]) => `<button role="tab" data-act="tab" data-v="${k}" aria-selected="${S.tab === k}">${n}${k === 'uebersicht' && S.vorschlaege.some((v) => v.trip === t.id && v.status === 'offen') ? ' <span class="status bad">' + S.vorschlaege.filter((v) => v.trip === t.id && v.status === 'offen').length + '</span>' : ''}</button>`).join('');
+    TAB[S.tab].fill(t);
+  },
+};
+const TAB = {};
+const fact = (h, v) => `<div class="fact"><h3>${h}</h3><div>${v || '<span class="meta">–</span>'}</div></div>`;
+const tags = (a, no) => (a && a.length ? `<div class="tags">${a.map((x) => `<span class="tag ${no ? 'no' : ''}">${esc(x)}</span>`).join('')}</div>` : '');
+
+TAB.uebersicht = {
+  shell() { return `<div class="cols"><div class="stack" id="u-main"></div><div class="stack"><div id="u-people"></div><div class="box"><h3>Optimieren</h3><div class="stack" id="u-opt" style="margin-top:10px"></div>${S.rw ? `<form id="frei" class="stack" style="gap:8px;margin-top:12px"><input class="in" id="frei-t" placeholder="Verbessere diese Reise: z. B. mehr Ruhe für Matteo" aria-label="Freitext zur Optimierung"><button class="btn" type="submit">Wunsch ans Team</button></form>` : ''}</div></div></div>`; },
+  fill(t) {
+    const z = t.zeitraum || {}, b = t.budget || {}, u = t.unterkunft || {}, a = t.anreise || {};
+    const bm = b.gesamt || b.pro_person_max ? [b.gesamt ? eur(b.gesamt) + ' gesamt' : '', b.pro_person_max ? 'max. ' + eur(b.pro_person_max) + ' p. P.' : ''].filter(Boolean).join(' · ') : 'Offen: Budget richtet sich nach dem Angebot';
+    const vs = S.vorschlaege.filter((v) => v.trip === t.id && ['offen', 'spaeter'].includes(v.status)).sort((x, y) => (x.status === 'offen' ? 0 : 1) - (y.status === 'offen' ? 0 : 1)).slice(0, 5);
+    const offen = S.auftraege.filter((x) => x.trip === t.id && x.status === 'offen');
+    const g = t.gruppe || {};
+    const leute = (t.mitreisende || []).map(person).filter(Boolean);
+    $('#u-main').innerHTML = `<div class="facts">
+      ${fact('Zeitraum', z.fruehester_start ? `${dat(z.fruehester_start)} bis ${dat(z.spaetester_rueckflug)}<br><span class="meta">${z.dauer_min}–${z.dauer_max} Tage · ± ${z.flex_tage || 0} Tage flexibel</span>` : '')}
+      ${fact('Reiseziel', esc((t.ziel && t.ziel.text) || '') + `<br><span class="meta">${esc((t.ziel && t.ziel.modus) || 'offen')}</span>`)}
+      ${fact('Reiseart', (t.reiseart || []).map(esc).join(', '))}
+      ${fact('Budget', esc(bm))}
+      ${fact('Unterkunft', [(u.typ || []).join(', '), u.min_sterne ? u.min_sterne + '+ Sterne' : '', u.min_bewertung ? 'Bewertung ab ' + u.min_bewertung : '', u.verpflegung && u.verpflegung !== 'egal' ? u.verpflegung : ''].filter(Boolean).map(esc).join(' · '))}
+      ${fact('Anreise', [(a.modi || []).join(', '), a.direktflug ? 'nur Direktflug' : '', a.max_reisezeit_h ? 'max. ' + a.max_reisezeit_h + ' Std.' : '', (a.abflughaefen || []).join(', ')].filter(Boolean).map(esc).join(' · '))}
+      ${fact('Muss-Kriterien', tags(t.muss))}${fact('No-Gos', tags(t.nogos, true))}
+      ${fact('Beobachtung', `Check ${(t.beobachten || {}).checks_pro_woche || 2}× pro Woche · Alarm ab ${(t.beobachten || {}).schwelle_prozent || 10} % Preisfall<br><span class="meta">Läuft nur auf Zuruf</span>`)}
+    </div>${t.notizen ? `<div class="soft"><h3>Notizen</h3><p style="margin-top:6px;white-space:pre-wrap">${esc(t.notizen)}</p></div>` : ''}
+    ${g.aktiv ? `<div class="box"><h3>Gruppenreise · Kosten</h3>${gruppe(t)}</div>` : ''}`;
+    $('#u-people').innerHTML = `<div class="box"><h3>Mitreisende</h3>${leute.length ? leute.map((p) => `<div class="prop"><span class="av" style="margin:0;background:${AVCOL[hash(p.name) % AVCOL.length]}">${esc(initials(p.name))}</span><div class="pt"><b>${esc(p.name)}</b><span class="meta">${esc(p.beziehung)}${alter(p) != null ? ' · ' + alter(p) + ' J.' : ''}${p.dokument_gueltig_bis ? ' · Dokument bis ' + dat(p.dokument_gueltig_bis) : ''}</span>${p.dokument_gueltig_bis && z.spaetester_rueckflug && p.dokument_gueltig_bis < z.spaetester_rueckflug ? '<br><span class="status bad">Läuft vor der Rückreise ab</span>' : ''}</div></div>`).join('') : '<p class="meta" style="margin-top:6px">Noch niemand ausgewählt.</p>'}</div>`;
+    $('#u-opt').innerHTML = `${vs.length ? vs.map(vorschlag).join('') : '<p class="meta">Keine offenen Vorschläge. „Optimieren“ legt einen Auftrag ab, das Team prüft Alternativen und legt bis zu 3 Vorschläge hier ab.</p>'}${offen.length ? `<div class="status warn">${offen.length} Auftrag${offen.length > 1 ? 'e' : ''} wartet auf das Team</div>` : ''}`;
+  },
+};
+function gruppe(t) {
+  const hh = (t.gruppe && t.gruppe.haushalte) || []; if (!hh.length) return '<p class="meta">Keine Haushalte eingetragen.</p>';
+  const sum = (S.plan && S.plan.tage ? S.plan.tage.flatMap((d) => d.eintraege) : []).reduce((a, e) => a + (Number(e.kosten) || 0), 0);
+  const tot = hh.reduce((a, h) => a + (Number(h.budget) || 0), 0);
+  return `<div class="scroll-x"><table class="tbl"><thead><tr><th>Haushalt</th><th>Personen</th><th class="n">Budget</th><th class="n">Anteil gleich</th><th class="n">Anteil nach Budget</th></tr></thead><tbody>${hh.map((h) => `<tr><td>${esc(h.name)}</td><td>${esc(h.personen)}</td><td class="n">${eur(h.budget)}</td><td class="n">${eur(sum / hh.length)}</td><td class="n">${tot ? eur((sum * (h.budget || 0)) / tot) : '–'}</td></tr>`).join('')}</tbody></table></div><p class="hint" style="margin-top:8px">Summe der Plan-Posten: ${eur(sum)}${t.gruppe.wuensche ? ' · Gemeinsame Wünsche: ' + esc(t.gruppe.wuensche) : ''}</p>`;
+}
+function vorschlag(v) {
+  return `<div class="soft" style="padding:14px"><b>${esc(v.titel)}</b><div class="meta">${esc(v.effekt || '')}</div>${v.begruendung ? `<p style="font-size:14px;margin-top:4px">${esc(v.begruendung)}</p>` : ''}${v.quelle ? `<div class="meta">Quelle: ${esc(v.quelle)}${v.stand ? ', Stand ' + dat(v.stand) : ''}</div>` : ''}
+  ${S.rw ? `<div class="row" style="margin-top:8px"><button class="btn sm primary" data-act="vs" data-id="${v.id}" data-v="angenommen">Annehmen</button><button class="btn sm" data-act="vs" data-id="${v.id}" data-v="abgelehnt">Ablehnen</button>${v.status === 'offen' ? `<button class="btn sm" data-act="vs" data-id="${v.id}" data-v="spaeter">Später</button>` : '<span class="status">Später</span>'}</div>` : ''}</div>`;
+}
+
+TAB.angebote = {
+  shell() { return '<div class="stack" id="a-body"></div>'; },
+  fill(t) {
+    const rows = S.prices.filter((p) => p.trip === t.id).sort((a, b) => b.datum.localeCompare(a.datum) || (a.preis_pp ?? 1e9) - (b.preis_pp ?? 1e9));
+    const dg = S.digests.filter((d) => d.trip === t.id).sort((a, b) => b.datum.localeCompare(a.datum))[0];
+    const p = preise(t.id);
+    $('#a-body').innerHTML = `${dg ? `<div class="box"><div class="row"><h3>Digest vom ${dat(dg.datum)}</h3><span class="sp"></span>${dg.empfehlung ? `<span class="status ${dg.empfehlung === 'jetzt buchen' ? 'ok' : dg.empfehlung === 'anpassen' ? 'warn' : ''}">${esc(dg.empfehlung)}</span>` : ''}</div><div class="md">${md(dg.markdown)}</div></div>` : '<div class="empty"><b>Noch kein Digest</b><span>Sage im Chat: „Preis-Jäger, Check für ' + esc(t.titel) + '“. Das Team recherchiert nur auf Zuruf.</span></div>'}
+    ${p.series.length > 1 ? `<div class="box"><h3>Preisverlauf (günstigster Preis p. P.)</h3><div style="margin-top:8px">${chart(p)}</div></div>` : ''}
+    <div class="box"><h3>Gefundene Angebote</h3>${rows.length ? `<div class="scroll-x"><table class="tbl"><thead><tr><th>Stand</th><th>Anbieter</th><th>Angebot</th><th class="n">p. P.</th><th class="n">Gesamt</th><th></th></tr></thead><tbody>${rows.map((r) => `<tr><td>${dat(r.datum, true)}</td><td>${esc(r.anbieter)}</td><td>${esc(r.ziel || '')}<br><span class="meta">${esc(r.beschreibung || '')}</span></td><td class="n">${eur(r.preis_pp)}</td><td class="n">${eur(r.preis_gesamt)}</td><td>${r.unsicher ? '<span class="status warn">unsicher</span> ' : ''}${/^https?:\/\//.test(r.link || '') ? `<a href="${esc(r.link)}" target="_blank" rel="noopener noreferrer">Quelle</a>` : ''}</td></tr>`).join('')}</tbody></table></div><p class="hint" style="margin-top:8px">„Unsicher“ heißt: Richtwert ohne festes Datum oder ohne Gebühren, Gepäck und Transfers. Der Gesamtpreis zählt, nicht der Lockpreis.</p>` : '<p class="meta" style="margin-top:6px">Noch keine Angebote erfasst.</p>'}</div></div>`;
+  },
+};
+function chart(p) {
+  const w = 560, h = 150, pad = 36, mn = Math.min(...p.series) * 0.95, mx = Math.max(...p.series) * 1.05, r = mx - mn || 1;
+  const X = (i) => pad + (i / (p.series.length - 1)) * (w - pad - 12), Y = (v) => h - 24 - ((v - mn) / r) * (h - 40);
+  const pts = p.series.map((v, i) => [X(i), Y(v)]);
+  return `<div class="scroll-x"><svg viewBox="0 0 ${w} ${h}" width="100%" style="min-width:420px;max-width:${w}px" role="img" aria-label="Preisverlauf"><g stroke="var(--line)" stroke-width="1"><line x1="${pad}" x2="${w - 12}" y1="${Y(mx)}" y2="${Y(mx)}"/><line x1="${pad}" x2="${w - 12}" y1="${Y(mn)}" y2="${Y(mn)}"/></g>
+  <polyline points="${pts.map((q) => q.join(',')).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round"/>${pts.map((q, i) => `<circle cx="${q[0]}" cy="${q[1]}" r="3.5" fill="var(--accent)"/><text x="${q[0]}" y="${h - 6}" text-anchor="middle" font-size="11" fill="var(--ink-3)">${dat(p.dates[i], true)}</text>`).join('')}
+  <text x="4" y="${Y(mx) + 4}" font-size="11" fill="var(--ink-3)">${eur(Math.round(mx))}</text><text x="4" y="${Y(mn) + 4}" font-size="11" fill="var(--ink-3)">${eur(Math.round(mn))}</text></svg></div>`;
+}
+function md(src) {
+  const inl = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  const out = []; const L = String(src || '').split('\n'); let i = 0;
+  while (i < L.length) {
+    const l = L[i];
+    if (/^\|/.test(l) && /^\|[\s:|-]+\|?$/.test(L[i + 1] || '')) { const head = l.split('|').slice(1, -1); i += 2; const body = []; while (i < L.length && /^\|/.test(L[i])) { body.push(L[i].split('|').slice(1, -1)); i++; } out.push(`<div class="scroll-x"><table><thead><tr>${head.map((c) => `<th>${inl(c.trim())}</th>`).join('')}</tr></thead><tbody>${body.map((r) => `<tr>${r.map((c) => `<td>${inl(c.trim())}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`); continue; }
+    if (/^#{1,3} /.test(l)) { out.push(`<h3>${inl(l.replace(/^#+ /, ''))}</h3>`); i++; continue; }
+    if (/^[-*] /.test(l)) { const it = []; while (i < L.length && /^[-*] /.test(L[i])) { it.push(`<li>${inl(L[i].slice(2))}</li>`); i++; } out.push(`<ul>${it.join('')}</ul>`); continue; }
+    if (l.trim()) out.push(`<p>${inl(l)}</p>`); i++;
+  }
+  return out.join('');
+}
+
+/* ----- Reiseplan ----- */
+const PACK = { basis: ['Reisedokumente', 'Ladekabel und Adapter', 'Medikamente und Reiseapotheke', 'Sonnenbrille'], Strand: ['Badesachen', 'Sonnencreme (Kinder-LSF)', 'Strandtücher', 'Sonnenhut'], 'Städtetrip': ['Bequeme Schuhe', 'Regenjacke', 'Tagesrucksack'], 'Natur/Aktiv': ['Wanderschuhe', 'Regenjacke', 'Trinkflasche'], Skifahren: ['Skibekleidung', 'Handschuhe und Mütze', 'Sonnencreme'], Wellness: ['Badebekleidung', 'Bademantel', 'Badeschuhe'], Rundreise: ['Packwürfel', 'Tagesrucksack', 'Bequeme Schuhe'], kind: ['Lieblingskuscheltier', 'Kinder-Snacks', 'Reiseapotheke für Kinder', 'Beschäftigung für unterwegs'] };
+const DOKS = ['Reisepässe/Kinderreisepass: Gültigkeit je Person prüfen', 'Reiseversicherung abschließen oder prüfen', 'Einreisehinweise beim Auswärtigen Amt prüfen', 'Impfhinweise prüfen (Quelle: Auswärtiges Amt, RKI)', 'Buchungsbestätigungen offline speichern'];
+const FEST = (e) => !['pause', 'anreise', 'rückreise', 'check-in'].includes(String(e.kategorie || '').toLowerCase());
+function planOrEmpty(t) { return S.plan || { tage: [], packliste: [], dokumente: [], hinweise: [] }; }
+function kosten(p) { return (p.tage || []).flatMap((d) => d.eintraege || []).reduce((a, e) => a + (Number(e.kosten) || 0), 0); }
+
+TAB.plan = {
+  shell() { return '<div class="stack" id="p-body"></div>'; },
+  fill(t) {
+    const el = $('#p-body'); const p = planOrEmpty(t); const tage = p.tage || [];
+    const sum = kosten(p), bud = t.budget && t.budget.gesamt;
+    const ratio = bud ? sum / bud : null, amp = ratio == null ? '' : ratio > 1 ? 'bad' : ratio > 0.8 ? 'warn' : 'ok';
+    const kopf = `<div class="box"><div class="ampel"><span class="dot ${amp}"></span><b>${eur(sum)}</b><span class="meta">${bud ? 'von ' + eur(bud) + ' Budget · ' + (amp === 'ok' ? 'im Rahmen' : amp === 'warn' ? 'knapp' : 'drüber') : 'Kein festes Budget hinterlegt'}</span><span class="sp"></span>
+      ${S.rw ? `<button class="btn sm" data-act="addtag">${ico(I.plus)}Tag</button><button class="btn sm" data-act="planwunsch">Plan vom Team</button>` : ''}<button class="btn sm" data-act="ics">Kalender (.ics)</button><button class="btn sm" data-act="kurz">Kurzversion (.md)</button></div>
+      ${(p.hinweise || []).length ? `<div class="stack" style="margin-top:12px">${p.hinweise.map((h) => `<div class="soft" style="padding:10px 14px;font-size:14px">${esc(h.text)}${h.quelle ? ` <span class="meta">Quelle: ${esc(h.quelle)}</span>` : ''}</div>`).join('')}</div>` : ''}</div>`;
+    const tageHtml = tage.length ? tage.map((d, di) => {
+      const fest = (d.eintraege || []).filter(FEST).length;
+      return `<div class="day" data-day="${di}"><div class="day-h"><h2>Tag ${di + 1}</h2><span class="meta">${t.zeitraum && t.zeitraum.fruehester_start ? dat(addDays(t.zeitraum.fruehester_start, di)) : ''}</span>${fest > 2 ? '<span class="status warn" title="Mit Kind besser nicht mehr als 2 feste Programmpunkte">Viel für einen Tag</span>' : ''}<span class="sp"></span>${S.rw ? `<button class="btn sm" data-act="addent" data-day="${di}">${ico(I.plus)}Eintrag</button><button class="btn sm" data-act="ruhiger" data-day="${di}">Ruhiger</button><button class="btn sm danger" data-act="deltag" data-day="${di}" aria-label="Tag ${di + 1} löschen">${ico(I.trash)}</button>` : ''}</div>
+      <div class="drop" data-drop="${di}">${(d.eintraege || []).length ? d.eintraege.map((e, ei) => ent(e, di, ei)).join('') : '<p class="meta">Noch nichts geplant. Eintrag hinzufügen oder per Drag & Drop hierher ziehen.</p>'}</div></div>`;
+    }).join('') : `<div class="empty"><b>Noch kein Reiseplan</b><span>Starte mit einem leeren Tag oder lass das Team einen Entwurf aus Ziel, Zeitraum, Mitreisenden und Backlog erstellen.</span><div class="row" style="justify-content:center">${S.rw ? '<button class="btn primary" data-act="planwunsch">Entwurf vom Team</button><button class="btn" data-act="addtag">Ersten Tag anlegen</button>' : ''}</div></div>`;
+    const lst = (key, titel, vorschl) => `<div class="box"><div class="row"><h3>${titel}</h3><span class="sp"></span>${S.rw && vorschl ? `<button class="btn sm" data-act="${vorschl}">Vorschlag erzeugen</button>` : ''}</div>${(p[key] || []).map((x, i) => `<label class="check ${x.done ? 'done' : ''}"><input type="checkbox" data-act="chk" data-k="${key}" data-i="${i}" ${x.done ? 'checked' : ''} ${S.rw ? '' : 'disabled'}><span style="flex:1">${esc(x.text)}</span>${S.rw ? `<button class="btn sm" type="button" data-act="chkdel" data-k="${key}" data-i="${i}" aria-label="Entfernen">${ico(I.trash)}</button>` : ''}</label>`).join('') || '<p class="meta" style="margin-top:6px">Noch leer.</p>'}${S.rw ? `<form data-form="chkadd" data-k="${key}" class="row" style="margin-top:10px;flex-wrap:nowrap"><input class="in" placeholder="Hinzufügen" aria-label="${titel} hinzufügen"><button class="btn sm" type="submit">${ico(I.plus)}</button></form>` : ''}</div>`;
+    el.innerHTML = kopf + tageHtml + `<div class="cols" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">${lst('packliste', 'Packliste', 'packvor')}${lst('dokumente', 'Dokument-Checkliste', 'dokvor')}</div>`;
+  },
+};
+function ent(e, di, ei) {
+  const who = (e.teilnehmer || []).map(person).filter(Boolean);
+  return `<div class="ent" ${S.rw ? 'draggable="true"' : ''} data-d="${di}" data-e="${ei}"><div class="tm">${esc(e.zeit || '')}</div><div class="bd"><b>${esc(e.titel)}</b><div class="meta">${[e.dauer ? e.dauer + ' Min.' : '', e.kategorie, e.kosten ? eur(e.kosten) : '', who.length ? who.map((p) => p.name).join(', ') : ''].filter(Boolean).map(esc).join(' · ')}</div>${e.notiz ? `<div class="meta">${esc(e.notiz)}</div>` : ''}
+  <div class="row" style="gap:8px;margin-top:4px">${/^https?:\/\//.test(e.link || '') ? `<a href="${esc(e.link)}" target="_blank" rel="noopener noreferrer" class="meta">Link</a>` : ''}${e.ort ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.ort)}" target="_blank" rel="noopener noreferrer" class="meta">Karte: ${esc(e.ort)}</a>` : ''}</div></div>
+  <div class="stack" style="gap:6px;align-items:flex-end"><span class="status ${e.status === 'gebucht' ? 'ok' : e.status === 'reserviert' ? 'info' : ''}">${esc(e.status || 'offen')}</span>${S.rw ? `<div class="row" style="gap:4px"><button class="btn sm" data-act="edent" data-d="${di}" data-e="${ei}" aria-label="Bearbeiten">${ico(I.edit)}</button><button class="btn sm danger" data-act="delent" data-d="${di}" data-e="${ei}" aria-label="Löschen">${ico(I.trash)}</button></div>` : ''}</div></div>`;
+}
+
+TAB.backlog = {
+  shell() { return backlogShell(true); },
+  fill(t) { backlogFill(t.id); },
+};
+TAB.verlauf = {
+  shell() { return '<div class="box" id="v-body"></div>'; },
+  fill() {
+    $('#v-body').innerHTML = `<h3>Verlauf</h3>${S.versions.length ? S.versions.map((v, i) => `<div class="prop"><div class="pt"><b>${esc(v.was)}</b><span class="meta">${esc(v.wer)} · ${new Date(v.datum).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}</span></div>${S.rw && i < S.versions.length && v.vorher && Object.keys(v.vorher).length ? `<button class="btn sm" data-act="undo" data-id="${v.id}">Rückgängig</button>` : ''}</div>`).join('') : '<p class="meta" style="margin-top:6px">Noch keine Änderungen.</p>'}<p class="hint" style="margin-top:10px">Jede Änderung speichert eine Version mit Wer, Was und Wann. „Rückgängig“ stellt die Werte vor dieser Änderung wieder her.</p>`;
+  },
+};
+
+/* ===== Backlog (global und je Reise) ===== */
+function backlogShell(inTrip) {
+  return `<div class="stack">${inTrip ? '' : '<div class="row"><h1>Backlog</h1></div>'}
+  ${S.rw ? `<form id="qa" class="row" style="flex-wrap:nowrap"><input class="in" id="qa-t" placeholder="Link oder Idee einfügen und Enter" aria-label="Neuer Backlog-Eintrag"><button class="btn primary" type="submit">Hinzufügen</button></form>` : ''}
+  <div class="filters" style="margin:0"><div class="chips" id="b-status"></div><select class="field-s" id="b-typ" data-live="1" aria-label="Typ"><option value="">Alle Typen</option>${BL_TYPEN.map((x) => `<option>${x}</option>`).join('')}</select><input class="field-s grow" id="b-q" data-live="1" type="search" placeholder="Suchen" aria-label="Backlog durchsuchen" value="${esc(S.bf.q)}"></div>
+  <div id="b-list"></div><div id="b-pref"></div></div>`;
+}
+function backlogFill(tid) {
+  $('#b-status').innerHTML = ['', ...BL_STATUS].map((s) => `<button class="chip" data-act="bstatus" data-v="${s}" aria-pressed="${S.bf.status === s}">${s || 'Alle'}</button>`).join('');
+  $('#b-typ').value = S.bf.typ;
+  const q = S.bf.q.trim().toLowerCase();
+  let list = S.backlog.filter((b) => (!tid || (b.trips || []).includes(tid)) && (!S.bf.status || b.status === S.bf.status) && (!S.bf.typ || b.typ === S.bf.typ) && (!q || [b.titel, b.notiz, b.url, (b.tags || []).join(' '), b.zusammenfassung].join(' ').toLowerCase().includes(q)));
+  list.sort((a, b) => (b.datum || '').localeCompare(a.datum || ''));
+  const el = $('#b-list');
+  if (!S.ready.backlog) { el.innerHTML = SKEL; return; }
+  el.innerHTML = list.length ? `<div class="box" style="padding:6px 20px">${list.map((b) => bitem(b)).join('')}</div>` : `<div class="empty"><b>${S.backlog.length ? 'Keine Treffer' : 'Der Backlog ist leer'}</b><span>Füge Links, Ideen, Unterkünfte oder Restaurants ein. Das Team prüft neue Links auf Zuruf und fasst sie in zwei Sätzen zusammen.</span></div>`;
+  const imp = S.backlog.filter((b) => b.impuls && b.bewertung);
+  const sc = {}; imp.forEach((b) => (b.tags || []).forEach((t) => { sc[t] = (sc[t] || 0) + (b.bewertung === 'up' ? 1 : -1); }));
+  const mag = Object.keys(sc).filter((k) => sc[k] > 0), nicht = Object.keys(sc).filter((k) => sc[k] < 0);
+  $('#b-pref').innerHTML = !tid && (mag.length || nicht.length) ? `<div class="soft"><h3>Gelernte Vorlieben aus Impulsen</h3><p style="margin-top:6px">Mag: ${mag.map(esc).join(', ') || '–'}<br>Mag nicht: ${nicht.map(esc).join(', ') || '–'}</p></div>` : '';
+}
+function bitem(b) {
+  const trips = (b.trips || []).map(trip).filter(Boolean).map((t) => t.titel);
+  return `<div class="prop"><div class="pt"><div class="row" style="gap:8px"><span class="tag">${esc(b.typ)}</span><b>${esc(b.titel)}</b></div>
+  ${b.zusammenfassung ? `<p style="font-size:14px;margin-top:4px">${esc(b.zusammenfassung)}</p>` : ''}${b.impuls ? `<p style="font-size:14px;margin-top:4px"><b>Warum:</b> ${esc(b.warum || '')} <b>Preisrahmen:</b> ${esc(b.preisrahmen || '')} <b>Zeit:</b> ${esc(b.zeitraum || '')} <b>Nachteil:</b> ${esc(b.risiko || '')}</p>` : ''}
+  ${b.notiz ? `<div class="meta">${esc(b.notiz)}</div>` : ''}
+  <div class="row" style="gap:8px;margin-top:6px">${/^https?:\/\//.test(b.url || '') ? `<a class="meta" href="${esc(b.url)}" target="_blank" rel="noopener noreferrer">${esc(b.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 50))}</a>` : ''}${tags(b.tags)}${trips.map((x) => `<span class="tag">${esc(x)}</span>`).join('')}<span class="meta">Priorität ${esc(b.prio || 'mittel')} · ${dat(b.datum)}</span></div></div>
+  <div class="stack" style="gap:6px;align-items:flex-end">${S.rw ? `<select class="field-s" data-act="bset" data-id="${b.id}" data-live="1" aria-label="Status">${BL_STATUS.map((s) => `<option ${s === b.status ? 'selected' : ''}>${s}</option>`).join('')}</select>` : `<span class="status">${esc(b.status)}</span>`}
+  ${S.rw && b.impuls ? `<div class="row" style="gap:4px"><button class="btn sm ${b.bewertung === 'up' ? 'primary' : ''}" data-act="rate" data-id="${b.id}" data-v="up" aria-label="Daumen hoch">👍</button><button class="btn sm ${b.bewertung === 'down' ? 'primary' : ''}" data-act="rate" data-id="${b.id}" data-v="down" aria-label="Daumen runter">👎</button></div>` : ''}
+  ${S.rw ? `<div class="row" style="gap:4px"><button class="btn sm" data-act="inplan" data-id="${b.id}" title="In den Reiseplan übernehmen">In Plan</button><button class="btn sm" data-act="bedit" data-id="${b.id}" aria-label="Bearbeiten">${ico(I.edit)}</button><button class="btn sm danger" data-act="bdel" data-id="${b.id}" aria-label="Löschen">${ico(I.trash)}</button></div>` : ''}</div></div>`;
+}
+VIEWS.backlog = { shell: () => backlogShell(false), fill: () => backlogFill(null) };
+
+/* ===== Mitreisende ===== */
+VIEWS.leute = {
+  shell() { return `<div class="row"><h1>Mitreisende</h1><span class="sp"></span>${S.rw ? `<button class="btn primary" data-act="newp">${ico(I.plus)}Person</button>` : ''}</div><p class="meta" style="margin:6px 0 20px">Wiederverwendbar für alle Reisen. Hier stehen keine Dokumentnummern, nur das Ablaufdatum als Hinweis.</p><div id="l-body"></div>`; },
+  fill() {
+    $('#l-body').innerHTML = S.ready.travelers ? (S.travelers.length ? `<div class="grid">${S.travelers.map((p) => `<div class="box stack" style="gap:8px"><div class="row"><span class="av" style="margin:0;width:44px;height:44px;font-size:15px;background:${AVCOL[hash(p.name) % AVCOL.length]}">${esc(initials(p.name))}</span><div><b>${esc(p.name)}</b><div class="meta">${esc(p.beziehung)}${alter(p) != null ? ' · ' + alter(p) + ' Jahre' : ' · Alter offen'}</div></div><span class="sp"></span>${S.rw ? `<button class="btn sm" data-act="editp" data-id="${p.id}" aria-label="${esc(p.name)} bearbeiten">${ico(I.edit)}</button>` : ''}</div>
+      ${[['Ernährung', p.ernaehrung], ['Mobilität', p.mobilitaet], ['Allergien', p.allergien], ['Interessen', p.interessen], ['Wunsch/Veto', p.wunsch_veto], ['Dokument gültig bis', p.dokument_gueltig_bis ? dat(p.dokument_gueltig_bis) : '']].filter((x) => x[1]).map((x) => `<div class="meta"><b>${x[0]}:</b> ${esc(x[1])}</div>`).join('') || '<div class="meta">Besonderheiten noch nicht erfasst.</div>'}</div>`).join('')}</div>` : '<div class="empty"><b>Noch keine Personen</b></div>') : SKEL;
+  },
+};
+
+/* ---------- Formulare ---------- */
+const dlg = $('#dlg');
+function modal(titel, body, onSave, saveLabel) {
+  dlg.innerHTML = `<form method="dialog" id="mf"><div class="dlg-h"><h2 style="flex:1">${esc(titel)}</h2><button type="button" class="btn sm" data-act="close" aria-label="Schließen">✕</button></div><div class="dlg-b">${body}</div><div class="dlg-f"><button type="button" class="btn" data-act="close">Abbrechen</button>${onSave ? `<button class="btn primary" type="submit">${saveLabel || 'Speichern'}</button>` : ''}</div></form>`;
+  dlg.showModal();
+  $('#mf').onsubmit = async (e) => { e.preventDefault(); if (!onSave) return; const ok = await onSave(new FormData(e.target), e.target); if (ok !== false) dlg.close(); };
+}
+dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+const fl = (label, name, val, type = 'text', extra = '') => `<label class="f">${label}<input name="${name}" type="${type}" value="${esc(val ?? '')}" ${extra}></label>`;
+const sel = (label, name, opts, val) => `<label class="f">${label}<select name="${name}">${opts.map((o) => `<option ${o === val ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+const picks = (name, opts, vals, lab) => `<div class="pick">${opts.map((o) => { const [v, l] = Array.isArray(o) ? o : [o, o]; return `<label><input type="checkbox" name="${name}" value="${esc(v)}" ${(vals || []).includes(v) ? 'checked' : ''}>${esc(l)}</label>`; }).join('')}</div>`;
+const num = (v) => { const n = Number(v); return v === '' || v == null || Number.isNaN(n) ? null : n; };
+
+function tripForm(t0) {
+  const t = clone(t0 || blankTrip()), neu = !t0;
+  const z = t.zeitraum, b = t.budget, u = t.unterkunft, a = t.anreise, g = t.gruppe;
+  const hh = (g.haushalte || []).map((h) => `${h.name} | ${h.personen || ''} | ${h.budget || ''}`).join('\n');
+  modal(neu ? 'Neue Reise' : 'Reise bearbeiten', `
+  <div class="fs"><div class="g2">${fl('Titel der Reise', 'titel', t.titel, 'text', 'required placeholder="z. B. Sommer 2027"')}${sel('Status', 'status', STATUS, t.status)}</div></div>
+  <div class="fs"><h3>Zeitraum</h3><div class="g2">${fl('Frühester Start', 'start', z.fruehester_start, 'date')}${fl('Spätester Rückflug', 'ende', z.spaetester_rueckflug, 'date')}${fl('Dauer von (Tage)', 'dmin', z.dauer_min, 'number', 'min="1" max="90"')}${fl('Dauer bis (Tage)', 'dmax', z.dauer_max, 'number', 'min="1" max="90"')}${fl('Flexibilität ± Tage', 'flex', z.flex_tage, 'number', 'min="0" max="30"')}</div></div>
+  <div class="fs"><h3>Reiseziele und Art</h3><div class="g2">${sel('Ziele', 'zmodus', ['konkret', 'Region', 'offen'], t.ziele_modus || t.ziel.modus)}${fl('Wohin? (bei „offen“ liefert das Team Vorschläge)', 'ziel', t.ziel.text)}</div>${picks('art', ARTEN, t.reiseart)}</div>
+  <div class="fs"><h3>Budget</h3><div class="g2">${fl('Budget gesamt (€), leer = überrasch uns', 'bgesamt', b.gesamt, 'number', 'min="0" step="50"')}${fl('Maximal pro Person (€)', 'bpp', b.pro_person_max, 'number', 'min="0" step="50"')}</div><p class="hint">Leer lassen heißt: Das Budget richtet sich nach dem Angebot, das Team schlägt vor.</p></div>
+  <div class="fs"><h3>Unterkunft</h3>${picks('utyp', UNTERKUNFT, u.typ)}<div class="g2">${fl('Mindest-Sterne (0–5)', 'sterne', u.min_sterne, 'number', 'min="0" max="5"')}${fl('Mindest-Bewertung (0–10)', 'bew', u.min_bewertung, 'number', 'min="0" max="10" step="0.1"')}${sel('Verpflegung', 'verpf', VERPFLEGUNG, u.verpflegung)}</div></div>
+  <div class="fs"><h3>Anreise</h3>${picks('amodi', VERKEHR, a.modi)}${picks('aflug', FLUGHAEFEN, a.abflughaefen)}<div class="g2"><label class="f">Direktflug<select name="direkt"><option value="0" ${a.direktflug ? '' : 'selected'}>egal</option><option value="1" ${a.direktflug ? 'selected' : ''}>nur Direktflug</option></select></label>${fl('Max. Reisezeit (Std.)', 'maxh', a.max_reisezeit_h, 'number', 'min="0"')}</div></div>
+  <div class="fs"><h3>Kriterien</h3><div class="g2"><label class="f">Muss-Kriterien (eins pro Zeile)<textarea name="muss" placeholder="Pool&#10;Strandnähe&#10;Kinderclub">${esc((t.muss || []).join('\n'))}</textarea></label><label class="f">No-Gos (eins pro Zeile)<textarea name="nogos" placeholder="Umstiege">${esc((t.nogos || []).join('\n'))}</textarea></label></div></div>
+  <div class="fs"><h3>Mitreisende</h3>${S.travelers.length ? picks('mit', S.travelers.map((p) => [p.id, p.name]), t.mitreisende) : '<p class="hint">Lege zuerst Mitreisende an.</p>'}
+  <label class="row" style="gap:8px"><input type="checkbox" name="gaktiv" ${g.aktiv ? 'checked' : ''} style="accent-color:var(--accent)">Gruppenreise (mehrere Haushalte, getrennte Budgets)</label>
+  <label class="f">Haushalte: „Name | Personen | Budget €“, eine Zeile pro Haushalt<textarea name="haus" placeholder="Familie Reichel | 2 Erw. + 1 Kind | 5000">${esc(hh)}</textarea></label>${fl('Gemeinsame Wünsche der Gruppe', 'gwunsch', g.wuensche)}</div>
+  <div class="fs"><h3>Beobachtung</h3><div class="g2">${fl('Checks pro Woche', 'cpw', t.beobachten.checks_pro_woche, 'number', 'min="1" max="14"')}${fl('Alarm ab Preisfall (%)', 'schw', t.beobachten.schwelle_prozent, 'number', 'min="1" max="50"')}</div><p class="hint">Gesucht wird nur, wenn du das Team beauftragst.</p></div>
+  <label class="f">Notizen<textarea name="notizen">${esc(t.notizen || '')}</textarea></label>`,
+  async (fd) => {
+    const get = (k) => fd.get(k), all = (k) => fd.getAll(k);
+    if (num(get('dmin')) > num(get('dmax'))) { toast('Dauer „von“ ist größer als „bis“.'); return false; }
+    if (get('start') && get('ende') && get('start') > get('ende')) { toast('Der früheste Start liegt nach dem spätesten Rückflug.'); return false; }
+    const next = { ...t, titel: get('titel').trim(), status: get('status'), reiseart: all('art'), muss: lines(get('muss')), nogos: lines(get('nogos')), mitreisende: all('mit'), notizen: get('notizen'),
+      zeitraum: { fruehester_start: get('start') || null, spaetester_rueckflug: get('ende') || null, dauer_min: num(get('dmin')) ?? 7, dauer_max: num(get('dmax')) ?? 14, flex_tage: num(get('flex')) ?? 0 },
+      ziel: { modus: get('zmodus'), text: get('ziel').trim() }, budget: { gesamt: num(get('bgesamt')) || null, pro_person_max: num(get('bpp')) || null },
+      unterkunft: { typ: all('utyp'), min_sterne: num(get('sterne')) ?? 0, min_bewertung: num(get('bew')) ?? 0, verpflegung: get('verpf') },
+      anreise: { modi: all('amodi'), abflughaefen: all('aflug'), direktflug: get('direkt') === '1', max_reisezeit_h: num(get('maxh')) || null },
+      gruppe: { aktiv: !!get('gaktiv'), wuensche: get('gwunsch'), haushalte: lines2(get('haus')) }, beobachten: { checks_pro_woche: num(get('cpw')) ?? 2, schwelle_prozent: num(get('schw')) ?? 10 } };
+    delete next.ziele_modus;
+    const kids = S.travelers.filter((p) => next.mitreisende.includes(p.id) && p.beziehung === 'Kind' && alter(p) == null);
+    if (kids.length) { toast('Bei Kindern ist das Alter Pflicht: ' + kids.map((k) => k.name).join(', ')); return false; }
+    const id = t0 ? t0.id : db.collection('trips').doc().id;
+    const r = await guard(() => writeTrip(id, next), 'Reise speichern'); if (r === null) return false;
+    toast(r === false ? 'Nichts geändert' : 'Gespeichert'); if (neu) openTrip(id); return true;
+  });
+}
+const lines2 = (txt) => String(txt || '').split('\n').map((l) => l.split('|').map((x) => x.trim())).filter((p) => p[0]).map((p) => ({ name: p[0], personen: p[1] || '', budget: num((p[2] || '').replace(/[^\d]/g, '')) }));
+function blankTrip() {
+  return { titel: '', status: 'Idee', ziel: { modus: 'offen', text: '' }, reiseart: [], zeitraum: { fruehester_start: null, spaetester_rueckflug: null, dauer_min: 7, dauer_max: 14, flex_tage: 0 }, budget: { gesamt: null, pro_person_max: null },
+    unterkunft: { typ: [], min_sterne: 0, min_bewertung: 0, verpflegung: 'egal' }, anreise: { modi: ['Flug'], abflughaefen: ['Köln/Bonn (CGN)', 'Düsseldorf (DUS)'], direktflug: false, max_reisezeit_h: null }, muss: [], nogos: [], mitreisende: [],
+    gruppe: { aktiv: false, haushalte: [], wuensche: '' }, beobachten: { checks_pro_woche: 2, schwelle_prozent: 10 }, notizen: '', archiviert: false };
+}
+function personForm(p0) {
+  const p = p0 ? clone(p0) : { beziehung: 'Familie' };
+  modal(p0 ? p.name + ' bearbeiten' : 'Neue Person', `<div class="g2">${fl('Name', 'name', p.name, 'text', 'required')}${sel('Beziehung', 'bez', BEZIEHUNG, p.beziehung)}${fl('Alter (Pflicht bei Kindern)', 'alter', p.alter, 'number', 'min="0" max="120"')}${fl('Geburtsmonat (optional)', 'geb', p.geburt_monat, 'month')}</div>
+  <div class="g2">${fl('Ernährung', 'ern', p.ernaehrung)}${fl('Mobilität', 'mob', p.mobilitaet)}${fl('Allergien', 'all', p.allergien)}${fl('Interessen', 'int', p.interessen)}</div>${fl('Wunsch oder Veto zur Reise (optional)', 'veto', p.wunsch_veto)}${fl('Reisedokument gültig bis (nur Hinweis, keine Nummern)', 'dok', p.dokument_gueltig_bis, 'date')}`,
+  async (fd) => {
+    const n = { ...p, name: fd.get('name').trim(), beziehung: fd.get('bez'), alter: num(fd.get('alter')), geburt_monat: fd.get('geb') || null, ernaehrung: fd.get('ern'), mobilitaet: fd.get('mob'), allergien: fd.get('all'), interessen: fd.get('int'), wunsch_veto: fd.get('veto'), dokument_gueltig_bis: fd.get('dok') || null };
+    delete n.id;
+    if (n.beziehung === 'Kind' && n.alter == null && !n.geburt_monat) { toast('Bei Kindern ist das Alter Pflicht.'); return false; }
+    const ref = p0 ? db.doc('travelers/' + p0.id) : db.collection('travelers').doc();
+    return (await guard(() => ref.set(n), 'Person speichern')) === null ? false : (toast('Gespeichert'), true);
+  });
+}
+function backlogForm(b0, pre) {
+  const b = b0 ? clone(b0) : { typ: 'Idee', status: 'neu', prio: 'mittel', trips: pre && pre.trips || [], titel: pre && pre.titel || '', url: pre && pre.url || '' };
+  modal(b0 ? 'Eintrag bearbeiten' : 'Neuer Eintrag', `<div class="g2">${sel('Typ', 'typ', BL_TYPEN, b.typ)}${sel('Status', 'status', BL_STATUS, b.status)}${sel('Priorität', 'prio', PRIO, b.prio)}</div>${fl('Titel', 'titel', b.titel, 'text', 'required')}${fl('URL', 'url', b.url, 'url')}<label class="f">Notiz<textarea name="notiz">${esc(b.notiz || '')}</textarea></label>${fl('Tags (Komma getrennt)', 'tags', (b.tags || []).join(', '))}<div class="fs"><h3>Zuordnung zu Reisen</h3>${picks('trips', S.trips.map((t) => [t.id, t.titel]), b.trips)}</div>`,
+  async (fd) => {
+    const n = { ...b, typ: fd.get('typ'), status: fd.get('status'), prio: fd.get('prio'), titel: fd.get('titel').trim(), url: fd.get('url').trim(), notiz: fd.get('notiz'), tags: lines(fd.get('tags')), trips: fd.getAll('trips'), datum: b.datum || heute() };
+    if (n.url && !/^https?:\/\//.test(n.url)) { toast('Die URL muss mit http:// oder https:// beginnen.'); return false; }
+    delete n.id;
+    const ref = b0 ? db.doc('backlog/' + b0.id) : db.collection('backlog').doc();
+    return (await guard(() => ref.set(n), 'Eintrag speichern')) === null ? false : (toast('Gespeichert'), true);
+  });
+}
+function entForm(di, ei) {
+  const t = trip(S.tripId), p = clone(planOrEmpty(t)); const e = ei == null ? { status: 'offen', teilnehmer: t.mitreisende || [] } : clone(p.tage[di].eintraege[ei]);
+  modal(ei == null ? 'Neuer Eintrag, Tag ' + (di + 1) : 'Eintrag bearbeiten', `${fl('Titel', 'titel', e.titel, 'text', 'required')}<div class="g2">${fl('Uhrzeit', 'zeit', e.zeit, 'time')}${fl('Dauer (Minuten)', 'dauer', e.dauer, 'number', 'min="0"')}${fl('Kosten (€)', 'kosten', e.kosten, 'number', 'min="0"')}${sel('Kategorie', 'kat', ['Aktivität', 'Restaurant', 'Pause', 'Anreise', 'Check-in', 'Rückreise', 'Sonstiges'], e.kategorie || 'Aktivität')}${sel('Buchungsstatus', 'st', ['offen', 'reserviert', 'gebucht'], e.status)}</div>${fl('Ort (für Kartenlink)', 'ort', e.ort)}${fl('Link', 'link', e.link, 'url')}<label class="f">Notiz<textarea name="notiz">${esc(e.notiz || '')}</textarea></label><div class="fs"><h3>Wer nimmt teil</h3>${picks('tn', S.travelers.map((x) => [x.id, x.name]), e.teilnehmer)}</div>`,
+  async (fd) => {
+    const n = { id: e.id || uid(), titel: fd.get('titel').trim(), zeit: fd.get('zeit'), dauer: num(fd.get('dauer')), kosten: num(fd.get('kosten')), kategorie: fd.get('kat'), status: fd.get('st'), ort: fd.get('ort'), link: fd.get('link'), notiz: fd.get('notiz'), teilnehmer: fd.getAll('tn') };
+    if (n.link && !/^https?:\/\//.test(n.link)) { toast('Der Link muss mit http:// oder https:// beginnen.'); return false; }
+    if (!p.tage[di]) return false; if (!p.tage[di].eintraege) p.tage[di].eintraege = [];
+    if (ei == null) p.tage[di].eintraege.push(n); else p.tage[di].eintraege[ei] = n;
+    p.tage[di].eintraege.sort((a, b) => (a.zeit || '99').localeCompare(b.zeit || '99'));
+    await savePlan(p); return true;
+  });
+}
+
+/* ---------- Aktionen ---------- */
+function openTrip(id, tab) { S.view = 'reise'; S.tripId = id; S.tab = tab || 'uebersicht'; S.menu = null; watchTrip(id); render(); }
+const A = {
+  nav(el) { S.view = el.dataset.v; S.tripId = null; S.menu = null; subsTrip.forEach((u) => u()); subsTrip = []; shellKey = ''; render(); },
+  tab(el) { S.tab = el.dataset.v; render(); },
+  fstatus(el) { S.f.status = el.dataset.v; store.set('filter', S.f); render(); },
+  bstatus(el) { S.bf.status = el.dataset.v; store.set('bfilter', S.bf); render(); },
+  menu(el) { S.menu = S.menu === el.dataset.id ? null : el.dataset.id; render(); },
+  open(el) { openTrip(el.dataset.id); },
+  neu() { tripForm(null); },
+  edit(el) { tripForm(trip(el.dataset.id)); },
+  close() { dlg.close(); },
+  newp() { personForm(null); },
+  editp(el) { personForm(person(el.dataset.id)); },
+  async dup(el) { const t = clone(trip(el.dataset.id)); delete t.id; t.titel += ' (Kopie)'; t.status = 'Idee'; delete t.erstellt; const id = db.collection('trips').doc().id; S.menu = null; await guard(async () => { await writeTrip(id, t, 'Dupliziert von ' + trip(el.dataset.id).titel); toast('Dupliziert'); }, 'Duplizieren'); },
+  async archiv(el) { const t = clone(trip(el.dataset.id)); t.archiviert = !t.archiviert; S.menu = null; await guard(async () => { await writeTrip(t.id, t, t.archiviert ? 'Archiviert' : 'Wiederhergestellt'); toast(t.archiviert ? 'Archiviert' : 'Wiederhergestellt'); }, 'Archivieren'); },
+  optimieren(el) {
+    const t = trip(el.dataset.id); S.menu = null; render();
+    modal('Optimieren: ' + t.titel, `<p>Das Team prüft Angebote neu und sucht Alternativen: anderer Zeitraum (± ${(t.zeitraum || {}).flex_tage || 0} Tage), anderer Flughafen, ähnliche Unterkunft, Nachbarort. Du bekommst höchstens 3 Vorschläge. Nichts ändert sich ohne dein Okay.</p><label class="f">Optionaler Wunsch<textarea name="w" placeholder="z. B. günstiger, weniger Fahrtzeit, mehr Ruhe für Matteo"></textarea></label><p class="hint">Die App kann das Team nicht selbst starten. Nach dem Ablegen sagst du im Chat: „Optimiere ${esc(t.titel)}“.</p>`,
+    async (fd) => { await auftrag('optimieren', fd.get('w'), t.id); toast('Auftrag liegt bereit. Sag im Chat: „Optimiere ' + t.titel + '“'); return true; }, 'Auftrag ablegen');
+  },
+  async vs(el) {
+    const v = S.vorschlaege.find((x) => x.id === el.dataset.id); const st = el.dataset.v;
+    await guard(async () => {
+      if (st === 'angenommen' && v.aenderung && Object.keys(v.aenderung).length) { const t = clone(trip(v.trip)); Object.assign(t, v.aenderung); await writeTrip(t.id, t, 'Vorschlag angenommen: ' + v.titel); }
+      await db.doc('vorschlaege/' + v.id).update({ status: st, entschieden: jetzt(), wer: S.who });
+      toast(st === 'angenommen' ? (v.aenderung ? 'Angenommen und umgesetzt' : 'Angenommen. Das Team setzt es auf Zuruf um') : st === 'abgelehnt' ? 'Abgelehnt' : 'Auf später gelegt');
+    }, 'Vorschlag speichern');
+  },
+  async undo(el) { await undo(el.dataset.id); },
+  addtag() { const p = clone(planOrEmpty(trip(S.tripId))); p.tage.push({ eintraege: [] }); savePlan(p); },
+  async deltag(el) { const p = clone(planOrEmpty(trip(S.tripId))); const d = +el.dataset.day; if ((p.tage[d].eintraege || []).length && !el.dataset.sure) { el.dataset.sure = 1; el.textContent = 'Wirklich?'; return; } p.tage.splice(d, 1); savePlan(p); },
+  addent(el) { entForm(+el.dataset.day, null); },
+  edent(el) { entForm(+el.dataset.d, +el.dataset.e); },
+  delent(el) { const p = clone(planOrEmpty(trip(S.tripId))); p.tage[+el.dataset.d].eintraege.splice(+el.dataset.e, 1); savePlan(p); },
+  async planwunsch() { await auftrag('plan', '', S.tripId); toast('Auftrag liegt bereit. Sag im Chat: „Planer, Entwurf für ' + trip(S.tripId).titel + '“'); },
+  async ruhiger(el) { await auftrag('plan-freitext', 'Tag ' + (+el.dataset.day + 1) + ' ruhiger', S.tripId); toast('Wunsch liegt beim Team'); },
+  chk(el) { const p = clone(planOrEmpty(trip(S.tripId))); p[el.dataset.k][+el.dataset.i].done = el.checked; savePlan(p); },
+  chkdel(el) { const p = clone(planOrEmpty(trip(S.tripId))); p[el.dataset.k].splice(+el.dataset.i, 1); savePlan(p); },
+  packvor() {
+    const t = trip(S.tripId), p = clone(planOrEmpty(t)); const have = new Set((p.packliste || []).map((x) => x.text));
+    const kind = (t.mitreisende || []).map(person).some((x) => x && x.beziehung === 'Kind');
+    [...PACK.basis, ...(t.reiseart || []).flatMap((a) => PACK[a] || []), ...(kind ? PACK.kind : [])].forEach((x) => { if (!have.has(x)) { have.add(x); (p.packliste = p.packliste || []).push({ text: x, done: false }); } });
+    savePlan(p);
+  },
+  dokvor() { const p = clone(planOrEmpty(trip(S.tripId))); const have = new Set((p.dokumente || []).map((x) => x.text)); DOKS.forEach((x) => { if (!have.has(x)) (p.dokumente = p.dokumente || []).push({ text: x, done: false }); }); savePlan(p); },
+  async ics() {
+    const t = trip(S.tripId), p = planOrEmpty(t); if (!t.zeitraum || !t.zeitraum.fruehester_start) { toast('Für den Kalender braucht die Reise einen frühesten Start.'); return; }
+    const E = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+    const stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; const out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Urlaubs-Team//DE', 'CALSCALE:GREGORIAN'];
+    (p.tage || []).forEach((d, di) => (d.eintraege || []).forEach((e) => {
+      const day = addDays(t.zeitraum.fruehester_start, di).replace(/-/g, ''); out.push('BEGIN:VEVENT', 'UID:' + (e.id || uid()) + '@urlaubs-team', 'DTSTAMP:' + stamp);
+      if (e.zeit) { out.push('DTSTART:' + day + 'T' + e.zeit.replace(':', '') + '00', 'DURATION:PT' + (e.dauer || 60) + 'M'); } else { out.push('DTSTART;VALUE=DATE:' + day); }
+      out.push('SUMMARY:' + E(e.titel)); if (e.ort) out.push('LOCATION:' + E(e.ort)); if (e.notiz) out.push('DESCRIPTION:' + E(e.notiz)); out.push('END:VEVENT');
+    }));
+    out.push('END:VCALENDAR'); await save(t.titel.replace(/[^\w-]+/g, '-') + '.ics', out.join('\r\n'));
+  },
+  async kurz() {
+    const t = trip(S.tripId), p = planOrEmpty(t); const L = [`# ${t.titel}`, '', `${(t.ziel && t.ziel.text) || 'Ziel offen'} · ${dat(t.zeitraum && t.zeitraum.fruehester_start)} bis ${dat(t.zeitraum && t.zeitraum.spaetester_rueckflug)}`, `Mitreisende: ${(t.mitreisende || []).map(person).filter(Boolean).map((x) => x.name).join(', ')}`, ''];
+    (p.tage || []).forEach((d, i) => { L.push(`## Tag ${i + 1}${t.zeitraum && t.zeitraum.fruehester_start ? ' · ' + dat(addDays(t.zeitraum.fruehester_start, i)) : ''}`); (d.eintraege || []).forEach((e) => L.push(`- ${e.zeit || ''} ${e.titel}${e.ort ? ' (' + e.ort + ')' : ''}${e.status && e.status !== 'offen' ? ' [' + e.status + ']' : ''}`)); L.push(''); });
+    L.push(`Kosten laut Plan: ${eur(kosten(p))}`); await save(t.titel.replace(/[^\w-]+/g, '-') + '-Kurzversion.md', L.join('\n'));
+  },
+  rate(el) { const b = S.backlog.find((x) => x.id === el.dataset.id); guard(() => db.doc('backlog/' + b.id).update({ bewertung: b.bewertung === el.dataset.v ? null : el.dataset.v }), 'Bewertung'); },
+  bedit(el) { backlogForm(S.backlog.find((x) => x.id === el.dataset.id)); },
+  bdel(el) { if (!el.dataset.sure) { el.dataset.sure = 1; el.innerHTML = 'Wirklich?'; return; } guard(() => db.doc('backlog/' + el.dataset.id).delete(), 'Löschen'); },
+  bset(el) { guard(() => db.doc('backlog/' + el.dataset.id).update({ status: el.value }), 'Status'); },
+  inplan(el) {
+    const b = S.backlog.find((x) => x.id === el.dataset.id); const tids = (b.trips && b.trips.length ? b.trips : S.trips.map((t) => t.id)); const tid = S.tripId || tids[0]; const t = trip(tid); if (!t) { toast('Ordne den Eintrag zuerst einer Reise zu.'); return; }
+    db.doc('plans/' + tid).get().then((s) => {
+      const pl = s.exists ? clone(s.data()) : { tage: [], packliste: [], dokumente: [], hinweise: [] }; if (!pl.tage.length) pl.tage.push({ eintraege: [] });
+      modal('In den Reiseplan: ' + t.titel, `<label class="f">Tag<select name="tag">${pl.tage.map((_, i) => `<option value="${i}">Tag ${i + 1}</option>`).join('')}</select></label>`, async (fd) => {
+        pl.tage[+fd.get('tag')].eintraege.push({ id: uid(), titel: b.titel, link: b.url, notiz: b.notiz || b.zusammenfassung || '', kategorie: b.typ === 'Restaurant' ? 'Restaurant' : 'Aktivität', status: 'offen', teilnehmer: t.mitreisende || [] });
+        await guard(async () => { await db.doc('plans/' + tid).set(pl); await db.doc('backlog/' + b.id).update({ status: 'übernommen' }); toast('In den Plan übernommen'); }, 'Übernehmen'); return true;
+      }, 'Übernehmen');
+    });
+  },
+};
+async function save(filename, data) {
+  const d = await claude.use('downloads').catch(() => null); if (!d) { toast('Download ist in dieser Ansicht nicht verfügbar.'); return; }
+  try { await d.save({ filename, data }); toast('Gespeichert'); } catch (e) { if (!e || e.code !== 'declined') toast('Speichern nicht möglich: ' + ((e && e.message) || 'unbekannter Fehler')); }
+}
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-act]');
+  if (!el) { if (S.menu) { S.menu = null; render(); } return; }
+  if (el.tagName === 'SELECT' || el.tagName === 'INPUT' && el.type === 'checkbox') return;
+  const f = A[el.dataset.act]; if (f) { if (el.dataset.act !== 'menu' && S.menu) S.menu = null; f(el); }
+});
+document.addEventListener('change', (e) => {
+  const el = e.target;
+  if (el.dataset.act === 'chk') A.chk(el); else if (el.dataset.act === 'bset') A.bset(el);
+  else if (el.id === 'f-person') { S.f.person = el.value; store.set('filter', S.f); render(); }
+  else if (el.id === 'f-sort') { S.f.sort = el.value; store.set('filter', S.f); render(); }
+  else if (el.id === 'f-archiv') { S.f.archiv = el.checked; store.set('filter', S.f); render(); }
+  else if (el.id === 'b-typ') { S.bf.typ = el.value; store.set('bfilter', S.bf); render(); }
+});
+document.addEventListener('input', (e) => {
+  const el = e.target;
+  if (el.id === 'f-q') { S.f.q = el.value; store.set('filter', S.f); VIEWS.reisen.fill(); }
+  else if (el.id === 'b-q') { S.bf.q = el.value; store.set('bfilter', S.bf); backlogFill(S.view === 'reise' ? S.tripId : null); }
+});
+document.addEventListener('submit', async (e) => {
+  const f = e.target;
+  if (f.id === 'qa') {
+    e.preventDefault(); const inp = $('#qa-t'), v = inp.value.trim(); if (!v) return;
+    const isUrl = /^https?:\/\//i.test(v); let titel = v, url = '';
+    if (isUrl) { url = v.split(/\s+/)[0]; try { const u = new URL(url); titel = u.hostname.replace(/^www\./, '') + (u.pathname.length > 1 ? u.pathname.slice(0, 40) : ''); } catch { /* Titel bleibt */ } }
+    const ok = await guard(() => db.collection('backlog').add({ typ: isUrl ? 'Link' : 'Idee', titel: titel.slice(0, 120), url, notiz: isUrl ? v.slice(url.length).trim() : '', tags: [], trips: S.view === 'reise' ? [S.tripId] : [], prio: 'mittel', status: 'neu', datum: heute() }), 'Eintrag speichern');
+    if (ok) { inp.value = ''; toast('Im Backlog. Titel und Kurzfassung holt das Team auf Zuruf.'); }
+  } else if (f.id === 'frei') {
+    e.preventDefault(); const v = $('#frei-t').value.trim(); if (!v) return; await auftrag('freitext', v, S.tripId); $('#frei-t').value = ''; toast('Wunsch liegt beim Team. Sag im Chat: „Optimiere ' + trip(S.tripId).titel + '“');
+  } else if (f.dataset.form === 'chkadd') {
+    e.preventDefault(); const inp = f.querySelector('input'), v = inp.value.trim(); if (!v) return; const p = clone(planOrEmpty(trip(S.tripId))); (p[f.dataset.k] = p[f.dataset.k] || []).push({ text: v, done: false }); inp.value = ''; savePlan(p);
+  }
+});
+/* Drag & Drop im Reiseplan */
+let drag = null;
+document.addEventListener('dragstart', (e) => { const n = e.target.closest && e.target.closest('.ent'); if (!n) return; drag = { d: +n.dataset.d, e: +n.dataset.e }; n.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', 'x'); } catch { /* ok */ } });
+document.addEventListener('dragend', (e) => { const n = e.target.closest && e.target.closest('.ent'); if (n) n.classList.remove('drag'); document.querySelectorAll('.day.over').forEach((x) => x.classList.remove('over')); drag = null; });
+document.addEventListener('dragover', (e) => { const d = e.target.closest && e.target.closest('.day'); if (d && drag) { e.preventDefault(); document.querySelectorAll('.day.over').forEach((x) => x.classList.remove('over')); d.classList.add('over'); } });
+document.addEventListener('drop', (e) => {
+  const d = e.target.closest && e.target.closest('.day'); if (!d || !drag) return; e.preventDefault();
+  const to = +d.dataset.day, p = clone(planOrEmpty(trip(S.tripId))); const [it] = p.tage[drag.d].eintraege.splice(drag.e, 1); p.tage[to].eintraege.push(it);
+  p.tage[to].eintraege.sort((a, b) => (a.zeit || '99').localeCompare(b.zeit || '99')); drag = null; savePlan(p);
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && S.menu) { S.menu = null; render(); } });
+
+/* ---------- Start ---------- */
+(async function boot() {
+  const u = await claude.use('user').catch(() => null);
+  try { const me = u && (await u.me()); if (me && me.name) S.who = me.name; } catch { /* Name bleibt „Du“ */ }
+  db = await claude.use('db').catch(() => null);
+  if (!db) { $('#main').innerHTML = '<div class="empty"><b>Anmeldung nötig</b><span>Öffne den Link in claude.ai und melde dich an, damit deine Reisen geladen werden.</span></div>'; return; }
+  try { const w = u && (await u.can('data.write')); S.rw = w === false ? false : true; } catch { S.rw = true; }
+  ['trips', 'travelers', 'backlog', 'prices', 'vorschlaege', 'auftraege', 'digests'].forEach((c) => watch(c, { prices: 'prices' }[c] || c));
+  render();
+})();
+</script>

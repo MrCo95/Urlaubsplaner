@@ -1,25 +1,23 @@
 # Urlaubs-Team
 
-Lokale Eingabemaske (Streamlit) plus ein Team aus vier Rollen. Daten liegen als JSON im Ordner `data/`.
+Online-App für Reisen als Kacheln, mit Eingabemaske, Angebote, Reiseplan und Backlog. Läuft als privater Link auf claude.ai, auch mobil: https://claude.ai/artifact/92MSpqUCs1n142JsRGzEZZ
 
-## Starten und Stoppen der App
-```
-pip install -r requirements.txt
-streamlit run app.py        # öffnet http://localhost:8501
-```
-Stoppen: `Strg+C` im Terminal.
+## Nutzung
+- **Reisen:** Kachel-Startseite mit Filter, Suche und Sortierung. „+ Neue Reise“ öffnet die Eingabemaske. Jede Kachel hat ein Menü (Öffnen, Optimieren, Duplizieren, Archivieren).
+- **Detailansicht:** Übersicht, Angebote (Digest, Preisverlauf), Reiseplan (Tage, Drag & Drop, Kosten-Ampel, Packliste, Dokument-Checkliste, Export .ics und Kurzversion), Backlog, Verlauf mit „Rückgängig“.
+- **Mitreisende:** wiederverwendbare Personenliste.
+- **Backlog:** Links, Ideen und Fundstücke einwerfen, global oder je Reise.
 
-## Arbeiten mit dem Team
-Im Projektordner `claude` starten und z. B. sagen:
-- „Scout, 3 neue Vorschläge für diesen Monat“
-- „Preis-Jäger, Check für Sommer 2027“
-- „Planer, Ablauf und Einreisehinweise für <Reise>“
-- „Buchungs-Assistent, bereite <Reise> vor“
+## Das Team arbeitet nur auf Zuruf
+Die App legt Aufträge ab, zum Beispiel über „Optimieren“. Im Chat mit Claude Code sagst du dann: „Optimiere Sommer 2027“, „Preis-Jäger, Check für Sommer 2027“, „Prüfe den Backlog“ oder „Planer, Entwurf für <Reise>“. Es läuft nichts automatisch.
 
-Ergebnisse erscheinen in der App (Ideen-Pool, Preise & Digest).
-
-## Suche nur auf Zuruf
-Es läuft nichts automatisch. Recherche, Preis-Checks und Vorschläge starten nur, wenn du das Team in einer Sitzung beauftragst („Preis-Jäger, Check für <Reise>“). Es gibt keinen Cron und keine geplante Aufgabe.
+## Dateien
+- `app/urlaubs-team.html`: Quelle der App
+- `CLAUDE.md`: Regeln und Datenstruktur für Claude
+- `BACKLOG.md`, `data/`: lesbarer Spiegel der Daten, aktualisiert mit `python3 scripts/spiegel.py <Exportordner>`
+- `legacy/`: erster Streamlit-Prototyp (nicht mehr in Gebrauch)
 
 ## Grenzen
-Portale lassen sich per Websuche nur eingeschränkt auslesen; Preise ohne festes Datum sind Richtwerte und als „unsicher“ markiert. Verlässlich ist die manuelle Prüfung mit festen Daten.
+- Portale lassen sich per Websuche nur eingeschränkt auslesen. Preise ohne festes Datum sind Richtwerte und als „unsicher“ markiert. Verlässlich ist die manuelle Prüfung mit festen Daten.
+- Die App kann keine Webseiten selbst abrufen und kein PDF erzeugen. Titel und Kurzfassung neuer Links holt das Team auf Zuruf. Exportiert wird als Kalenderdatei (.ics) und als Markdown-Kurzversion.
+- Bilder: Farbverlauf mit Emoji. Eigene Uploads und lizenzfreie Quellen sind noch nicht angebunden.

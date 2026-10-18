@@ -1,42 +1,44 @@
 [
   {
-    "id": "p_martin",
-    "name": "Martin",
-    "beziehung": "Familie",
+    "allergien": "",
     "alter": 40,
-    "alter_ca": true,
-    "ernaehrung": "",
-    "mobilitaet": "",
-    "allergien": "",
-    "interessen": "",
-    "wunsch_veto": "",
-    "dokument_gueltig_bis": null
-  },
-  {
-    "id": "p_kristina",
-    "name": "Kristina",
     "beziehung": "Familie",
-    "alter": 40,
-    "alter_ca": true,
-    "ernaehrung": "",
-    "mobilitaet": "",
-    "allergien": "",
-    "interessen": "",
-    "wunsch_veto": "",
-    "dokument_gueltig_bis": null
-  },
-  {
-    "id": "p_matteo",
-    "name": "Matteo",
-    "beziehung": "Kind",
-    "alter": 5,
-    "ernaehrung": "",
-    "mobilitaet": "",
-    "allergien": "",
-    "interessen": "",
-    "wunsch_veto": "",
     "dokument_gueltig_bis": null,
+    "ernaehrung": "",
+    "geburt_monat": null,
+    "interessen": "",
+    "mobilitaet": "",
+    "name": "Kristina",
+    "notiz": "Alter ca. 40, Besonderheiten noch nicht erfasst",
+    "wunsch_veto": "",
+    "id": "p_kristina"
+  },
+  {
+    "allergien": "",
+    "alter": 40,
+    "beziehung": "Familie",
+    "dokument_gueltig_bis": null,
+    "ernaehrung": "",
+    "geburt_monat": null,
+    "interessen": "",
+    "mobilitaet": "",
+    "name": "Martin",
+    "notiz": "Alter ca. 40, Besonderheiten noch nicht erfasst",
+    "wunsch_veto": "",
+    "id": "p_martin"
+  },
+  {
+    "allergien": "",
+    "alter": 5,
+    "beziehung": "Kind",
+    "dokument_gueltig_bis": null,
+    "ernaehrung": "",
     "geburt_monat": "2021-06",
-    "notiz": "Wird im Juni 2027 sechs; voraussichtlich Einschulung Sommer 2027 (Stichtag NRW 30.09. – bitte bestätigen)."
+    "interessen": "",
+    "mobilitaet": "",
+    "name": "Matteo",
+    "notiz": "Voraussichtlich Einschulung Sommer 2027 (bitte bestätigen)",
+    "wunsch_veto": "",
+    "id": "p_matteo"
   }
 ]
