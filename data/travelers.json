@@ -1,0 +1,40 @@
+[
+  {
+    "id": "p_martin",
+    "name": "Martin",
+    "beziehung": "Familie",
+    "alter": 40,
+    "alter_ca": true,
+    "ernaehrung": "",
+    "mobilitaet": "",
+    "allergien": "",
+    "interessen": "",
+    "wunsch_veto": "",
+    "dokument_gueltig_bis": null
+  },
+  {
+    "id": "p_kristina",
+    "name": "Kristina",
+    "beziehung": "Familie",
+    "alter": 40,
+    "alter_ca": true,
+    "ernaehrung": "",
+    "mobilitaet": "",
+    "allergien": "",
+    "interessen": "",
+    "wunsch_veto": "",
+    "dokument_gueltig_bis": null
+  },
+  {
+    "id": "p_matteo",
+    "name": "Matteo",
+    "beziehung": "Kind",
+    "alter": 5,
+    "ernaehrung": "",
+    "mobilitaet": "",
+    "allergien": "",
+    "interessen": "",
+    "wunsch_veto": "",
+    "dokument_gueltig_bis": null
+  }
+]
