@@ -18,7 +18,8 @@ Voraussetzung: `pip install playwright pypdf`, Chromium vorhanden. Erwartet: all
 2. `python3 scripts/spiegel.py <Exportordner>`, dann `python3 qa/check_daten.py`. Erwartet: „Keine Fehler.“
 
 ## 3. Klicktest im Live-Link (von Hand, im echten Viewer)
-1. Startseite lädt, erste Kachel ist „Neue Reise“, Kacheln zeigen Preis und Trendpfeil.
+1. Startseite lädt, Suchleiste oben, erste Kachel ist „Neue Reise“, Kacheln zeigen Preis und Trendpfeil.
+1a. Suchleiste: „Rom, Mai 2027, bis 2.000 €“ eingeben. Reise „Rom 2027“ öffnet sich, Meldung „Suche gestartet“. In der Claude-Sitzung kommt ein Kommentar „Jetzt suchen: …“ an (nur im echten Viewer prüfbar, setzt Bearbeiter-Rechte und offene Sitzung voraus).
 2. Neue Reise anlegen: Rückreise vor Hinreise, Datum in der Vergangenheit und Kind ohne Alter werden mit Meldung abgelehnt.
 3. Kachelmenü: Optimieren, Duplizieren, Archivieren, Wiederherstellen.
 4. Detail → Übersicht: „Optimieren“ legt einen Auftrag ab. Danach im Chat „Optimiere <Reise>“, Vorschläge erscheinen, Annehmen ändert die Reise, Verlauf → Rückgängig stellt sie wieder her.

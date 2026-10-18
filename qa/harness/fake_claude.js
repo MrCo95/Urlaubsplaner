@@ -31,7 +31,8 @@
   };
   const downloads = { saved: [], save: async (r) => { downloads.saved.push({ filename: r.filename, data: r.data instanceof Uint8Array ? Array.from(r.data) : r.data }); return { status: 'saved' }; } };
   const user = { isOwner: async () => true, canEdit: async () => true, can: async () => (window.__QA_RO__ ? false : true), me: async () => ({ id: 'u_test', name: 'Tester' }), id: async () => 'u_test' };
-  const caps = { db, user, downloads };
+  const comments = { canSendToClaude: async () => (window.__QA_NOSESSION__ ? 'no_session' : 'available'), anchorFor: async () => ({ fake: true }), sendToClaude: async (t) => { (window.__sent = window.__sent || []).push(t); return { threadId: 'th1', commentId: 'c1' }; } };
+  const caps = { db, user, downloads, comments };
   window.__db = db; window.__downloads = downloads;
   window.claude = { use: async (n) => (n === 'db' && window.__QA_NODB__ ? null : caps[n] || null) };
 })();

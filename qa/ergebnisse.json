@@ -642,6 +642,99 @@
  },
  {
   "ids": [
+   "A-136"
+  ],
+  "ok": true,
+  "msg": "Startseite hat die Suchleiste mit Beispiel im Platzhalter"
+ },
+ {
+  "ids": [
+   "A-136"
+  ],
+  "ok": true,
+  "msg": "Leere Eingabe legt nichts an und erklärt, was zu tun ist"
+ },
+ {
+  "ids": [
+   "A-136",
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Suchleiste legt Reise an: Titel „Mallorca 2027“, Budget 3000, Status Recherche"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Suchauftrag liegt mit Reise-ID und Wunschtext vor"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Claude wird per Kommentar geweckt: „Jetzt suchen: „Mallorca 2027“ (Reise-ID wuhm0vzmek, Auftrag suche). Wunsch: Mallorca, 2 Er“"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Rückmeldung an Martin: „Reise angelegt, Suche gestartet. Ergebnisse erscheinen in dieser Reise.“"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Übersicht zeigt „Suche angefragt“ mit Uhrzeit"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "„Jetzt suchen“ im Detail legt Auftrag an und weckt Claude"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Optimieren weckt Claude ebenfalls"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "„Jetzt suchen“ im Kachelmenü weckt Claude"
+ },
+ {
+  "ids": [
+   "A-126",
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Suchtext mit HTML wird nicht ausgeführt"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Ohne Sitzung: Reise und Auftrag angelegt, Hinweis „Sag im Chat“, kein Absturz (Toast: „Reise angelegt. Auftrag liegt bereit. Sag im Chat: „Suche für Rom 2027“.“)"
+ },
+ {
+  "ids": [
+   "A-137"
+  ],
+  "ok": true,
+  "msg": "Nur-Lesen-Konto sieht keine Suchleiste"
+ },
+ {
+  "ids": [
    "A-057",
    "A-062"
   ],
@@ -796,7 +889,7 @@
    "A-035"
   ],
   "ok": true,
-  "msg": "Kachelmenü: ['Öffnen', 'Optimieren', 'Duplizieren', 'Archivieren']"
+  "msg": "Kachelmenü: ['Öffnen', 'Jetzt suchen', 'Optimieren', 'Duplizieren', 'Archivieren']"
  },
  {
   "ids": [
@@ -982,7 +1075,7 @@
    "A-128"
   ],
   "ok": true,
-  "msg": "Startseite mit 20 Reisen und 100 Preisen: 0.10 s (Lokaltest ohne Netz, Datenbankzugriff simuliert)"
+  "msg": "Startseite mit 20 Reisen und 100 Preisen: 0.14 s (Lokaltest ohne Netz, Datenbankzugriff simuliert)"
  },
  {
   "ids": [

@@ -344,6 +344,42 @@ def main():
         ok('A-099', pg.eval_on_selector_all('#b-list .prop', 'e=>e.length') == 1, 'Backlog-Suche filtert')
         ctx.close()
 
+        # ---------- Suchleiste und „Jetzt suchen“ ----------
+        ctx, pg = new_page(b, seed=TRAV)
+        ok('A-136', pg.query_selector('#sb-t') is not None and 'bis 3.000' in pg.get_attribute('#sb-t', 'placeholder'), 'Startseite hat die Suchleiste mit Beispiel im Platzhalter')
+        pg.click('#sb-go'); pg.wait_for_timeout(200)
+        ok('A-136', 'Schreib kurz' in toast(pg) and not docs(pg, 'trips'), 'Leere Eingabe legt nichts an und erklärt, was zu tun ist')
+        pg.fill('#sb-t', 'Mallorca, 2 Erw. + 1 Kind, Juli 2027, bis 3.000 €'); pg.press('#sb-t', 'Enter'); pg.wait_for_selector('#dtabs'); pg.wait_for_timeout(400)
+        msg0 = toast(pg); tt = docs(pg, 'trips'); tid2, t2 = next(iter(tt.items())) if tt else (None, {})
+        ok(['A-136', 'A-137'], len(tt) == 1 and t2['titel'] == 'Mallorca 2027' and t2['budget']['gesamt'] == 3000 and t2['status'] == 'Recherche' and t2['ziel']['text'] == 'Mallorca' and 'p_matteo' in t2['mitreisende'], 'Suchleiste legt Reise an: Titel „%s“, Budget %s, Status %s' % (t2.get('titel'), t2.get('budget', {}).get('gesamt'), t2.get('status')))
+        ok('A-137', any(a['art'] == 'suche' and a['trip'] == tid2 and a['status'] == 'offen' and 'Mallorca' in a['text'] for a in docs(pg, 'auftraege').values()), 'Suchauftrag liegt mit Reise-ID und Wunschtext vor')
+        sent = pg.evaluate('window.__sent || []')
+        ok('A-137', len(sent) == 1 and 'Jetzt suchen' in sent[0]['text'] and tid2 in sent[0]['text'], 'Claude wird per Kommentar geweckt: „%s“' % (sent[0]['text'][:90] if sent else ''))
+        ok('A-137', 'Suche gestartet' in msg0, 'Rückmeldung an Martin: „%s“' % msg0)
+        ok('A-137', 'Suche angefragt' in pg.inner_text('#u-opt'), 'Übersicht zeigt „Suche angefragt“ mit Uhrzeit')
+        # Jetzt suchen im Detail
+        pg.click('#dhead [data-act=suche]'); pg.wait_for_timeout(400)
+        ok('A-137', len(pg.evaluate('window.__sent')) == 2 and sum(1 for a in docs(pg, 'auftraege').values() if a['art'] == 'suche') == 2, '„Jetzt suchen“ im Detail legt Auftrag an und weckt Claude')
+        # Optimieren weckt ebenfalls
+        pg.click('#dhead [data-act=optimieren]'); pg.wait_for_selector('#mf'); submit(pg); pg.wait_for_timeout(300)
+        ok('A-137', len(pg.evaluate('window.__sent')) == 3, 'Optimieren weckt Claude ebenfalls')
+        # Kachelmenü
+        pg.click('[data-act=nav][data-v=reisen]'); pg.wait_for_selector('#grid .card'); pg.click('[data-act=menu][data-id="%s"]' % tid2); pg.click('.menu button:has-text("Jetzt suchen")'); pg.wait_for_timeout(400)
+        ok('A-137', len(pg.evaluate('window.__sent')) == 4, '„Jetzt suchen“ im Kachelmenü weckt Claude')
+        # XSS im Suchtext
+        pg.fill('#sb-t', '<img src=x onerror="window.__xss9=1"> Rom'); pg.press('#sb-t', 'Enter'); pg.wait_for_selector('#dtabs'); pg.wait_for_timeout(400)
+        ok(['A-126', 'A-137'], pg.evaluate('window.__xss9') is None, 'Suchtext mit HTML wird nicht ausgeführt')
+        ctx.close()
+        # Ohne offene Sitzung: Rückfall auf Auftrag
+        ctx, pg = new_page(b, init='window.__QA_NOSESSION__=true', seed=TRAV)
+        pg.fill('#sb-t', 'Rom 2027, Städtetrip'); pg.press('#sb-t', 'Enter'); pg.wait_for_selector('#dtabs'); pg.wait_for_timeout(300)
+        ok('A-137', 'Sag im Chat' in toast(pg) and not pg.evaluate('window.__sent') and any(a['art'] == 'suche' for a in docs(pg, 'auftraege').values()) and len(docs(pg, 'trips')) == 1, 'Ohne Sitzung: Reise und Auftrag angelegt, Hinweis „Sag im Chat“, kein Absturz (Toast: „%s“)' % toast(pg))
+        ctx.close()
+        # Nur lesen: keine Suchleiste
+        ctx, pg = new_page(b, init='window.__QA_RO__=true', seed=TRAV)
+        ok('A-137', pg.query_selector('#sb') is None, 'Nur-Lesen-Konto sieht keine Suchleiste')
+        ctx.close()
+
         # ---------- Mitreisende ----------
         ctx, pg = new_page(b, seed=TRAV)
         pg.click('[data-act=nav][data-v=leute]'); pg.wait_for_selector('#l-body .box')
@@ -403,7 +439,7 @@ def main():
         # Kachelmenü
         pg.click('[data-act=menu][data-id=tb]'); pg.wait_for_timeout(150)
         items = pg.eval_on_selector_all('.menu button', 'e=>e.map(x=>x.innerText)')
-        ok(['A-032', 'A-033', 'A-034', 'A-035'], items == ['Öffnen', 'Optimieren', 'Duplizieren', 'Archivieren'], 'Kachelmenü: %s' % items)
+        ok(['A-032', 'A-033', 'A-034', 'A-035'], items == ['Öffnen', 'Jetzt suchen', 'Optimieren', 'Duplizieren', 'Archivieren'], 'Kachelmenü: %s' % items)
         pg.screenshot(path=os.path.join(SHOTS, '08-kachelmenue.png'))
         pg.click('.menu button:has-text("Optimieren")'); pg.wait_for_selector('#mf'); submit(pg); pg.wait_for_timeout(200)
         ok('A-033', any(a['trip'] == 'tb' and a['art'] == 'optimieren' for a in docs(pg, 'auftraege').values()), 'Optimieren aus dem Kachelmenü legt Auftrag an')

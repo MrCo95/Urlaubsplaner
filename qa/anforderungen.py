@@ -156,6 +156,10 @@ A = {
   ("Ungültige Eingaben führen zu Fehlermeldungen, nicht zu Abstürzen oder Dateizugriff außerhalb des Projekts.", "Prüfprompt"),
   ("Airbnb-Anmutung: Weißraum, abgerundete Ecken, ruhige Typografie, konsistente Abstände.", "Prüfprompt"),
  ],
+ "10 Suchleiste und direktes Suchen (Wunsch Martin 18.10.)": [
+  ("Die Startseite hat eine Eingabeleiste für einen freien Reisewunsch; sie legt die Reise an.", "Wunsch Martin"),
+  ("„Jetzt suchen“ (Suchleiste, Detail, Kachelmenü, Optimieren) legt einen Auftrag an und weckt Claude sofort, sonst Rückfall auf den Auftrag mit Hinweis.", "Wunsch Martin"),
+ ],
 }
 out, js, n = ["# Anforderungsliste Urlaubs-Team", "", "Quelle: `urlaubs-team-prompt.md`, Prüfprompt und Entscheidungen von Martin. Eine Anforderung = ein überprüfbarer Satz.", ""], [], 0
 counts = []

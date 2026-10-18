@@ -10,9 +10,9 @@ Hinweis zur Unabhängigkeit: Der Prüfer ist dasselbe Modell, das die App gebaut
 
 | Anforderungen gesamt | Erfüllt | Teilweise | Fehlt | Nicht prüfbar |
 |---|---|---|---|---|
-| 135 | 119 | 14 | 0 | 2 |
+| 137 | 120 | 15 | 0 | 2 |
 
-Browser-Tests: 137 Prüfungen, 136 bestanden, 1 durchgefallen (die eine offene ist A-098, Grenze der Plattform). Konsolenfehler: keine.
+Browser-Tests: 150 Prüfungen, 149 bestanden, 1 durchgefallen (die eine offene ist A-098, Grenze der Plattform). Konsolenfehler: keine.
 
 ## Was geprüft wurde und wie
 
@@ -34,6 +34,7 @@ Browser-Tests: 137 Prüfungen, 136 bestanden, 1 durchgefallen (die eine offene i
 | M-07 | P3 | A-131: Kontrast im Hellmodus unter 4,5:1 bei Hilfstext auf weicher Fläche (4,36) und Akzent auf Akzentfläche (4,11). Farben angepasst. | ja (Schleife 2) | berechnet, alle Paare ≥ 4,5 |
 | M-08 | P3 | Kachel „Neue Reise“ war auf dem Handy riesig, Mini-Kurve hing lose neben dem Trend. | ja (Schleife 2) | Screenshot geprüft |
 | M-09 | P3 | Links mit Status „nicht abrufbar“ wurden als „geprüft“ angezeigt. | ja (Schleife 3) | bestanden |
+| M-11 | P2 | A-136: Nach dem Absenden der Suchleiste öffnete sich die Reise nicht, weil der Cursor in der Eingabe blieb und die Ansicht zurückgehalten wurde. Von den neuen Tests gefunden, behoben. | ja (Schleife 3) | bestanden |
 | M-10 | P3 | A-104: Tote Links konnten nicht markiert werden. Feld `link_status` mit Anzeige ergänzt. | ja (Schleife 3) | bestanden |
 
 Mehrere Fehlschläge im ersten Lauf lagen am Test selbst (Großschreibung in Tabellenköpfen, falsche Erwartung bei der Preissortierung, Neuladen löschte die Attrappe). Sie sind korrigiert und zählen nicht als Mängel der App.
@@ -50,6 +51,7 @@ Mehrere Fehlschläge im ersten Lauf lagen am Test selbst (Großschreibung in Tab
 | O-6 | A-026: Kein Upload eigener Bilder. | `assets`-Fähigkeit mit Upload-Button an der Reise. | klein bis mittel |
 | O-7 | A-110, A-117: Kein wiederkehrender Check, bewusst. | Nur falls gewünscht: geplante Cloud-Aufgabe zweimal pro Woche. | klein |
 | O-8 | Echte Reise „Sommer“ (Feb 2027, Strand, Gruppenreise ohne Haushalte) hat einen offenen Optimieren-Auftrag vom 18.10. 14:40. | Auf Zuruf bearbeiten. | klein |
+| O-10 | A-137: „Jetzt suchen“ weckt Claude nur, wenn die Sitzung offen ist und Martin Bearbeiter ist. | Ohne Sitzung bleibt der Auftrag liegen, die App sagt das. Dauerhaft direkt nur mit eigener Cloud-Aufgabe, die auf Aufträge reagiert. | klein bis mittel |
 | O-9 | Veröffentlichte App nicht im echten Viewer getestet. | 10-Minuten-Klicktest laut `qa/regressionstests.md`. | klein, Martin |
 
 ## Meine Entscheidungen (Fragen an Martin)
@@ -99,10 +101,10 @@ Du machst den 10-Minuten-Klicktest im Live-Link, beantwortest die Fragen 1 bis 5
 | A-029 | Suche. | Erfüllt | Browser-Test: Suche „rom“ → 1 Kachel |  |
 | A-030 | Sortierung nach Datum, Preis und zuletzt aktualisiert. | Erfüllt | Browser-Test: Sortierung nach Preis: ['[TEST] Städtetrip Rom', '[TEST] Sommer 2027', '[TEST] Skiurlaub'] (+2 weitere) |  |
 | A-031 | Die erste Kachel ist „+ Neue Reise“ und öffnet die Eingabemaske. | Erfüllt | Browser-Test: Kachel „+ Neue Reise“ ist die erste Kachel (+1 weitere) |  |
-| A-032 | Kachelmenü: Öffnen. | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Optimieren', 'Duplizieren', 'Archivieren'] |  |
-| A-033 | Kachelmenü: Optimieren. | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Optimieren', 'Duplizieren', 'Archivieren'] (+1 weitere) |  |
-| A-034 | Kachelmenü: Duplizieren. | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Optimieren', 'Duplizieren', 'Archivieren'] (+1 weitere) |  |
-| A-035 | Kachelmenü: Archivieren (und Wiederherstellen). | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Optimieren', 'Duplizieren', 'Archivieren'] (+3 weitere) |  |
+| A-032 | Kachelmenü: Öffnen. | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Jetzt suchen', 'Optimieren', 'Duplizieren', 'Archivieren'] |  |
+| A-033 | Kachelmenü: Optimieren. | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Jetzt suchen', 'Optimieren', 'Duplizieren', 'Archivieren'] (+1 weitere) |  |
+| A-034 | Kachelmenü: Duplizieren. | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Jetzt suchen', 'Optimieren', 'Duplizieren', 'Archivieren'] (+1 weitere) |  |
+| A-035 | Kachelmenü: Archivieren (und Wiederherstellen). | Erfüllt | Browser-Test: Kachelmenü: ['Öffnen', 'Jetzt suchen', 'Optimieren', 'Duplizieren', 'Archivieren'] (+3 weitere) |  |
 | A-036 | Detailansicht mit den Tabs Übersicht, Angebote, Reiseplan, Backlog, Verlauf. | Erfüllt | Browser-Test: Detail-Tabs: ['Übersicht', 'Angebote', 'Reiseplan', 'Backlog', 'Verlauf'] |  |
 | A-037 | Preisverlauf als kleine Kurve in der Kachel. | Erfüllt | Browser-Test: Preisverlauf-Kurve in der Kachel |  |
 | A-038 | Preisverlauf als Kurve im Tab „Angebote“. | Erfüllt | Browser-Test: Preisverlauf-Kurve im Tab Angebote |  |
@@ -203,3 +205,5 @@ Du machst den 10-Minuten-Klicktest im Live-Link, beantwortest die Fragen 1 bis 5
 | A-133 | Keine Zugangsdaten oder API-Schlüssel im Repo, `.gitignore` korrekt. | Erfüllt | Suche nach Schlüsseln, Passwörtern, IBAN; `.gitignore` mit `.env`, `*.pem`, `*.key`; keine solchen Dateien getrackt |  |
 | A-134 | Ungültige Eingaben führen zu Fehlermeldungen, nicht zu Abstürzen oder Dateizugriff außerhalb des Projekts. | Erfüllt | Browser-Test: Nur-Lesen: keine Schreib-Bedienelemente (+4 weitere) |  |
 | A-135 | Airbnb-Anmutung: Weißraum, abgerundete Ecken, ruhige Typografie, konsistente Abstände. | Erfüllt | Browser-Test: Abgerundete Bildfläche 4:3 mit 16px Radius |  |
+| A-136 | Die Startseite hat eine Eingabeleiste für einen freien Reisewunsch; sie legt die Reise an. | Erfüllt | Browser-Test: Startseite hat die Suchleiste mit Beispiel im Platzhalter (+2 weitere) |  |
+| A-137 | „Jetzt suchen“ (Suchleiste, Detail, Kachelmenü, Optimieren) legt einen Auftrag an und weckt Claude sofort, sonst Rückfall auf den Auftrag mit Hinweis. | Teilweise | Browser-Test mit Attrappe: Auftrag, Kommentar an Claude, Rückfall ohne Sitzung, 9 Prüfungen bestanden | Das echte Wecken per `sendToClaude` ist nur im Live-Viewer prüfbar und setzt Bearbeiter-Rechte und eine offene Claude-Sitzung voraus. O-10. |

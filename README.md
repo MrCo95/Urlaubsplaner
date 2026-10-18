@@ -8,6 +8,9 @@ Online-App für Reisen als Kacheln, mit Eingabemaske, Angebote, Reiseplan und Ba
 - **Mitreisende:** wiederverwendbare Personenliste.
 - **Backlog:** Links, Ideen und Fundstücke einwerfen, global oder je Reise.
 
+## Direkt suchen
+Oben auf der Startseite steht die Suchleiste: Reisewunsch eintippen (z. B. „Mallorca, Juli 2027, bis 3.000 €“) und „Reise anlegen und suchen“ drücken. Dasselbe geht mit „Jetzt suchen“ an jeder Reise. Die App legt einen Auftrag ab und weckt Claude, solange die Claude-Sitzung offen ist. Sonst sagst du im Chat: „Suche für <Reise>“.
+
 ## Das Team arbeitet nur auf Zuruf
 Die App legt Aufträge ab, zum Beispiel über „Optimieren“. Im Chat mit Claude Code sagst du dann: „Optimiere Sommer 2027“, „Preis-Jäger, Check für Sommer 2027“, „Prüfe den Backlog“ oder „Planer, Entwurf für <Reise>“. Es läuft nichts automatisch.
 

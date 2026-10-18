@@ -808,5 +808,17 @@
   "bereich": "9 Qualität (Prüfprompt)",
   "text": "Airbnb-Anmutung: Weißraum, abgerundete Ecken, ruhige Typografie, konsistente Abstände.",
   "quelle": "Prüfprompt"
+ },
+ {
+  "id": "A-136",
+  "bereich": "10 Suchleiste und direktes Suchen (Wunsch Martin 18.10.)",
+  "text": "Die Startseite hat eine Eingabeleiste für einen freien Reisewunsch; sie legt die Reise an.",
+  "quelle": "Wunsch Martin"
+ },
+ {
+  "id": "A-137",
+  "bereich": "10 Suchleiste und direktes Suchen (Wunsch Martin 18.10.)",
+  "text": "„Jetzt suchen“ (Suchleiste, Detail, Kachelmenü, Optimieren) legt einen Auftrag an und weckt Claude sofort, sonst Rückfall auf den Auftrag mit Hinweis.",
+  "quelle": "Wunsch Martin"
  }
 ]
