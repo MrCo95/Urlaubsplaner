@@ -43,6 +43,7 @@ def traveler_form(t):
         t["name"] = c[0].text_input("Name", t["name"])
         t["beziehung"] = c[1].selectbox("Beziehung", s.BEZIEHUNG, s.BEZIEHUNG.index(t["beziehung"]))
         has_age = c[2].number_input("Alter (Pflicht bei Kindern)", 0, 120, t["alter"] or 0)
+        t["geburt_monat"] = st.text_input("Geburtsmonat (JJJJ-MM, optional)", t.get("geburt_monat", ""))
         t["ernaehrung"] = st.text_input("Ernährung", t["ernaehrung"])
         c = st.columns(2)
         t["mobilitaet"] = c[0].text_input("Mobilität", t["mobilitaet"])

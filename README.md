@@ -18,7 +18,10 @@ Im Projektordner `claude` starten und z. B. sagen:
 
 Ergebnisse erscheinen in der App (Ideen-Pool, Preise & Digest).
 
-## Regelmäßiger Check (2x pro Woche)
+## Regelmäßiger Check (2x pro Woche) – Cloud
+Der Check läuft als geplante Aufgabe in der Cloud (Di und Fr, 8:07 Uhr), schreibt Preise und Digest in diesen Branch und sendet bei Relevantem einen Push. Vor dem Öffnen der App: `git pull`. Pausieren oder stoppen: in der Claude-App unter den geplanten Aufgaben deaktivieren.
+
+### Alternative lokal (Cron)
 Starten (macOS/Linux, Crontab `crontab -e`, Di und Fr 8:07 Uhr):
 ```
 7 8 * * 2,5  cd ~/Urlaubsplaner && claude -p "$(cat team/check_prompt.md)" --permission-mode acceptEdits
