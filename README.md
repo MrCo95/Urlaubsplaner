@@ -18,15 +18,8 @@ Im Projektordner `claude` starten und z. B. sagen:
 
 Ergebnisse erscheinen in der App (Ideen-Pool, Preise & Digest).
 
-## Regelmäßiger Check (2x pro Woche) – Cloud
-Der Check läuft als geplante Aufgabe in der Cloud (Di und Fr, 8:07 Uhr), schreibt Preise und Digest in diesen Branch und sendet bei Relevantem einen Push. Vor dem Öffnen der App: `git pull`. Pausieren oder stoppen: in der Claude-App unter den geplanten Aufgaben deaktivieren.
-
-### Alternative lokal (Cron)
-Starten (macOS/Linux, Crontab `crontab -e`, Di und Fr 8:07 Uhr):
-```
-7 8 * * 2,5  cd ~/Urlaubsplaner && claude -p "$(cat team/check_prompt.md)" --permission-mode acceptEdits
-```
-Stoppen: Zeile aus der Crontab löschen. Der Rechner muss zur Zeit laufen. Das Intervall pro Reise stellst du in der Maske ein; der Check prüft, welche Reisen fällig sind.
+## Suche nur auf Zuruf
+Es läuft nichts automatisch. Recherche, Preis-Checks und Vorschläge starten nur, wenn du das Team in einer Sitzung beauftragst („Preis-Jäger, Check für <Reise>“). Es gibt keinen Cron und keine geplante Aufgabe.
 
 ## Grenzen
 Portale lassen sich per Websuche nur eingeschränkt auslesen; Preise ohne festes Datum sind Richtwerte und als „unsicher“ markiert. Verlässlich ist die manuelle Prüfung mit festen Daten.
