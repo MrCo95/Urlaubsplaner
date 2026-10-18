@@ -1,0 +1,54 @@
+[
+  {
+    "trip_id": "trip_sommer2027",
+    "datum": "2026-10-18",
+    "anbieter": "TUI",
+    "ziel": "Türkische Riviera",
+    "beschreibung": "Pauschalreise ab CGN, 1 Woche, 'ab'-Preis (Richtwert, kein Termin im Sommer 2027 bestätigt)",
+    "preis_pp": 674,
+    "preis_gesamt": null,
+    "link": "https://www.tui.com/pauschalreisen/urlaub-ab-koeln-bonn/",
+    "unsicher": true,
+    "quelle": "tui.com",
+    "abrufdatum": "2026-10-18"
+  },
+  {
+    "trip_id": "trip_sommer2027",
+    "datum": "2026-10-18",
+    "anbieter": "TUI",
+    "ziel": "Mallorca",
+    "beschreibung": "Pauschalreise ab CGN, 1 Woche, 'ab'-Preis (Richtwert)",
+    "preis_pp": 758,
+    "preis_gesamt": null,
+    "link": "https://www.tui.com/pauschalreisen/urlaub-ab-koeln-bonn/",
+    "unsicher": true,
+    "quelle": "tui.com",
+    "abrufdatum": "2026-10-18"
+  },
+  {
+    "trip_id": "trip_sommer2027",
+    "datum": "2026-10-18",
+    "anbieter": "TUI",
+    "ziel": "Kreta",
+    "beschreibung": "Pauschalreise ab CGN, 1 Woche, 'ab'-Preis (Richtwert)",
+    "preis_pp": 1252,
+    "preis_gesamt": null,
+    "link": "https://www.tui.com/pauschalreisen/urlaub-ab-koeln-bonn/",
+    "unsicher": true,
+    "quelle": "tui.com",
+    "abrufdatum": "2026-10-18"
+  },
+  {
+    "trip_id": "trip_sommer2027",
+    "datum": "2026-10-18",
+    "anbieter": "Familienhotels.de",
+    "ziel": "Usedom (Trassenheide)",
+    "beschreibung": "Strandhotel, 7 Nächte, 01.06.–09.09.2027, ohne Anreise",
+    "preis_pp": 881.53,
+    "preis_gesamt": null,
+    "link": "https://www.familienhotels.de/de/familienhotels/angebot-178255-sommer-angebot-2027.html",
+    "unsicher": true,
+    "quelle": "familienhotels.de",
+    "abrufdatum": "2026-10-18"
+  }
+]

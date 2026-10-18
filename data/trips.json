@@ -1,0 +1,64 @@
+[
+  {
+    "id": "trip_sommer2027",
+    "titel": "Sommer 2027 (Beispiel)",
+    "status": "Beobachten",
+    "zeitraum": {
+      "fruehester_start": "2027-07-19",
+      "spaetester_rueckflug": "2027-08-31",
+      "dauer_min": 7,
+      "dauer_max": 14,
+      "flex_tage": 3
+    },
+    "ziele": {
+      "modus": "offen",
+      "text": ""
+    },
+    "reiseart": [
+      "Strand"
+    ],
+    "budget": {
+      "modus": "offen",
+      "gesamt": null,
+      "pro_person_max": null
+    },
+    "unterkunft": {
+      "typ": [
+        "Hotel",
+        "Resort"
+      ],
+      "min_sterne": 0,
+      "min_bewertung": 0.0,
+      "verpflegung": "egal"
+    },
+    "anreise": {
+      "modi": [
+        "Flug"
+      ],
+      "direktflug": false,
+      "max_reisezeit_h": null,
+      "abflughaefen": [
+        "Köln/Bonn (CGN)",
+        "Düsseldorf (DUS)"
+      ]
+    },
+    "muss": [],
+    "nogos": [],
+    "mitreisende": [
+      "p_martin",
+      "p_kristina",
+      "p_matteo"
+    ],
+    "gruppe": {
+      "aktiv": false,
+      "haushalte": []
+    },
+    "beobachten": {
+      "checks_pro_woche": 2,
+      "schwelle_prozent": 10
+    },
+    "notizen": "BEISPIEL mit Platzhalterwerten (NRW-Sommerferien 2027). Zeitraum, Budget (offen) und Kriterien bitte in der Maske anpassen.",
+    "geaendert": "2026-10-18T09:34",
+    "erstellt": "2026-10-18T09:34"
+  }
+]
