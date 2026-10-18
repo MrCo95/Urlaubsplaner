@@ -10,7 +10,7 @@ Hinweis zur Unabhängigkeit: Der Prüfer ist dasselbe Modell, das die App gebaut
 
 | Anforderungen gesamt | Erfüllt | Teilweise | Fehlt | Nicht prüfbar |
 |---|---|---|---|---|
-| 137 | 120 | 15 | 0 | 2 |
+| 137 | 121 | 14 | 0 | 2 |
 
 Browser-Tests: 150 Prüfungen, 149 bestanden, 1 durchgefallen (die eine offene ist A-098, Grenze der Plattform). Konsolenfehler: keine.
 
@@ -206,4 +206,4 @@ Du machst den 10-Minuten-Klicktest im Live-Link, beantwortest die Fragen 1 bis 5
 | A-134 | Ungültige Eingaben führen zu Fehlermeldungen, nicht zu Abstürzen oder Dateizugriff außerhalb des Projekts. | Erfüllt | Browser-Test: Nur-Lesen: keine Schreib-Bedienelemente (+4 weitere) |  |
 | A-135 | Airbnb-Anmutung: Weißraum, abgerundete Ecken, ruhige Typografie, konsistente Abstände. | Erfüllt | Browser-Test: Abgerundete Bildfläche 4:3 mit 16px Radius |  |
 | A-136 | Die Startseite hat eine Eingabeleiste für einen freien Reisewunsch; sie legt die Reise an. | Erfüllt | Browser-Test: Startseite hat die Suchleiste mit Beispiel im Platzhalter (+2 weitere) |  |
-| A-137 | „Jetzt suchen“ (Suchleiste, Detail, Kachelmenü, Optimieren) legt einen Auftrag an und weckt Claude sofort, sonst Rückfall auf den Auftrag mit Hinweis. | Teilweise | Browser-Test mit Attrappe: Auftrag, Kommentar an Claude, Rückfall ohne Sitzung, 9 Prüfungen bestanden | Das echte Wecken per `sendToClaude` ist nur im Live-Viewer prüfbar und setzt Bearbeiter-Rechte und eine offene Claude-Sitzung voraus. O-10. |
+| A-137 | „Jetzt suchen“ (Suchleiste, Detail, Kachelmenü, Optimieren) legt einen Auftrag an und weckt Claude sofort, sonst Rückfall auf den Auftrag mit Hinweis. | Erfüllt | Live am 18.10. 15:22: Suchleiste „Asien“ legte Reise und Auftrag an, der Kommentar „Jetzt suchen“ weckte die Sitzung, Ergebnis (3 Impulse, Digest) und Antwort im Kommentar-Thread folgten; plus 9 Browser-Prüfungen | Wecken nur bei offener Sitzung und Bearbeiter-Rechten, sonst Rückfall auf den Auftrag. O-10. |

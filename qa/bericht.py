@@ -23,7 +23,7 @@ M = {
  'A-085': ('Teilweise', 'Browser-Test: „Tag 3 ruhiger“ legt Auftrag ab', 'Umsetzung durch das Team auf Zuruf nicht gesondert getestet.'),
  'A-087': ('Teilweise', 'Browser-Test: Hinweis mit Quelle wird angezeigt; Test-Plan: „noch nicht geprüft“', 'Keine konkreten Ziele gewählt, daher keine Öffnungszeiten.'),
  'A-089': ('Erfüllt', 'Browser-Test: Dokument-Checkliste mit Quelle Auswärtiges Amt', 'Inhalt der Quelle konnte nicht gelesen werden, siehe A-127.'),
- 'A-137': ('Teilweise', 'Browser-Test mit Attrappe: Auftrag, Kommentar an Claude, Rückfall ohne Sitzung, 9 Prüfungen bestanden', 'Das echte Wecken per `sendToClaude` ist nur im Live-Viewer prüfbar und setzt Bearbeiter-Rechte und eine offene Claude-Sitzung voraus. O-10.'),
+ 'A-137': ('Erfüllt', 'Live am 18.10. 15:22: Suchleiste „Asien“ legte Reise und Auftrag an, der Kommentar „Jetzt suchen“ weckte die Sitzung, Ergebnis (3 Impulse, Digest) und Antwort im Kommentar-Thread folgten; plus 9 Browser-Prüfungen', 'Wecken nur bei offener Sitzung und Bearbeiter-Rechten, sonst Rückfall auf den Auftrag. O-10.'),
  'A-098': ('Teilweise', 'Browser-Test: Titel nur aus der URL, keine Kurzbeschreibung', 'Die App darf keine Fremdseiten abrufen. Kurzfassung auf Zuruf durch das Team. O-1.'),
  'A-100': ('Teilweise', 'Kopie mit Testdaten: 10 Einträge in `BACKLOG.md` = 10 in `backlog.json`', 'Spiegel läuft nur auf Zuruf, nicht automatisch bei jeder Änderung. O-2.'),
  'A-101': ('Erfüllt', '`BACKLOG.md`: gruppiert nach Reise, dann Status', ''),
